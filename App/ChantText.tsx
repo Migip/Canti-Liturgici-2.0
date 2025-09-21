@@ -43,6 +43,7 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
         nFontSize: Settings.nChantTextSize
     };*/
     private _sOriginalText: string = '';
+    protected _sCompName: string = "ChantText";
     public state: stateType;
 
     public constructor(props: any) {
@@ -83,12 +84,12 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
         this.props.navigation.setOptions(oOptions);
 
         this.props.navigation.addListener('focus', (event: any) => {
-            ChantText._log("focus");
+            this._log("focus");
             activateKeepAwakeAsync();
             this.nFontSizeTmp = Settings.nChantTextSize;
         });
         this.props.navigation.addListener('beforeRemove', (event: any) => {
-            ChantText._log("beforeRemove");
+            this._log("beforeRemove");
             deactivateKeepAwake();
         });
 
@@ -188,7 +189,7 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
     };
 
     public onPinchChangeJs(oEvent: GestureUpdateEvent<PinchGestureHandlerEventPayload & PinchGestureChangeEventPayload>) {
-        ChantText._log(oEvent);
+        this._log(oEvent);
         this.nFontSizeTmp = Settings.normalizeTextSize(this.nFontSize * oEvent.scale);
     };
 
@@ -197,7 +198,7 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
             this._oCurrState = this.getDefaultState();
             this.setState(this._oCurrState);
         };
-        ChantText._log("initView", this._oCurrState, this.state);
+        this._log("initView", this._oCurrState, this.state);
         myFile.readDocumentFile(ConstFilePath.mainCanti + this._params.oJsonLine.number + '.txt')
             .then(
                 (sString: string) => {
@@ -237,25 +238,4 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
     private get nFontSizeTmp(): number {
         return this._oCurrState.nFontSize;
     };
-
-    private static _log(message?: any, ...optionalParams: any[]) {
-        //console.log("ChantText", message, optionalParams);
-    };
 }
-
-
-// declare type HTMLChantTextProps = {
-//     text: string
-// };
-
-/*class HTMLChantText extends myReactComponent<HTMLChantTextProps> {
-    public constructor(props: any) {
-        super(props);
-    };
-
-    render(): React.ReactNode {
-        //let oComponent: React.DOMElement<React.DOMAttributes<Element>, Element> = React.createElement("Main", null, this.props.text);
-        let oComponent: React.DOMElement<React.DOMAttributes<Element>, Element> = React.createElement("Text", null, this.props.text);
-        return oComponent;
-    }
-}*/

@@ -3,14 +3,12 @@ import myReactComponent from '../../customComponents/myReactComponent';
 import { GestureResponderEvent, View } from 'react-native';
 import { Text } from 'react-native-elements';
 import CustomPopup from '../../customComponents/CustomPopup';
-import { CheckBox } from '@rneui/themed';
 import { GeneralStyles } from '../../Styles/GeneralStyles';
 import Slider from '@react-native-community/slider';
-import { Icon } from 'react-native-elements';
 import { Settings, SettingsType } from '../../globals/classes/settings';
 import { MenuStyles } from '../../Styles/MenuStyle';
 import { myIcons } from '../../globals/constants/Icons';
-import { customMessage } from '../../globals/classes/customMessage';
+import CustomCheckbox from '../../customComponents/CustomCheckbox';
 
 
 declare type SettingsProps = {
@@ -26,6 +24,7 @@ declare type stateType = {
 export default class SettingsMenuButton extends myReactComponent<SettingsProps> {
     private _oCurrState: stateType;
     public readonly state: stateType;
+    protected _sCompName: string = 'SettingsMenuButton';
 
     public constructor(props: any) {
         super(props);
@@ -35,7 +34,7 @@ export default class SettingsMenuButton extends myReactComponent<SettingsProps> 
                 nChantTextSize: Settings.nChantTextSize
             }
         };
-        SettingsMenuButton._log("constructor", this._oCurrState);
+        this._log("constructor", this._oCurrState);
         this.state = this._oCurrState;
     };
 
@@ -56,12 +55,16 @@ export default class SettingsMenuButton extends myReactComponent<SettingsProps> 
                                 GeneralStyles.flexHoriz,
                                 GeneralStyles.center
                             ]}>
-                            <CheckBox
+                            {/*<CheckBox
                                 checked={this._oCurrState.settings.bHideSecondVoices}
                                 onPress={this.onMinorVoicePress.bind(this)} />
                             <Text>
                                 {this._oI18n.menu.SettingsHideMinorVoices}
-                            </Text>
+                            </Text>*/}
+                            <CustomCheckbox
+                                value={this._oCurrState.settings.bHideSecondVoices}
+                                onPress={this.onMinorVoicePress.bind(this)}
+                                title={this._oI18n.menu.SettingsHideMinorVoices} />
                         </View>
                         <View
                             style={[
@@ -81,7 +84,7 @@ export default class SettingsMenuButton extends myReactComponent<SettingsProps> 
                                 step={1}
                                 value={this._oCurrState.settings.nChantTextSize}
                                 onValueChange={(value: number) => {
-                                    SettingsMenuButton._log("onValueChange", value);
+                                    this._log("onValueChange", value);
                                     this.nChantTextSize = value;
                                 }}
                                 minimumTrackTintColor="#6d6bfbff"
@@ -99,33 +102,33 @@ export default class SettingsMenuButton extends myReactComponent<SettingsProps> 
     };
 
     private onMinorVoicePress(oEvent: GestureResponderEvent) {
-        SettingsMenuButton._log("onMinorVoicePress");
+        this._log("onMinorVoicePress");
         this.bHideSecondVoices = !this.bHideSecondVoices;
     };
 
     public onOpenModal() {
         this.nChantTextSize = Settings.nChantTextSize;
-        SettingsMenuButton._log("onOpenModal", this._oCurrState);
+        this._log("onOpenModal", this._oCurrState);
     };
 
     private set nChantTextSize(nNewValue: number) {
-        SettingsMenuButton._log("set nChantTextSize", nNewValue);
+        this._log("set nChantTextSize", nNewValue);
         Settings.nChantTextSize = nNewValue;
         this._oCurrState.settings.nChantTextSize = nNewValue;
         this.setState(this._oCurrState);
     };
     private get nChantTextSize(): number {
-        SettingsMenuButton._log("nChantTextSize", Settings.nChantTextSize);
+        this._log("nChantTextSize", Settings.nChantTextSize);
         return Settings.nChantTextSize;
     };
     private set bHideSecondVoices(bHideSecondVoices: boolean) {
-        SettingsMenuButton._log("bHideSecondVoices", bHideSecondVoices);
+        this._log("bHideSecondVoices", bHideSecondVoices);
         Settings.bHideSecondVoices = bHideSecondVoices;
         this._oCurrState.settings.bHideSecondVoices = bHideSecondVoices;
         this.setState(this._oCurrState);
     };
     private get bHideSecondVoices(): boolean {
-        SettingsMenuButton._log("get bHideSecondVoices", Settings.bHideSecondVoices);
+        this._log("get bHideSecondVoices", Settings.bHideSecondVoices);
         return Settings.bHideSecondVoices;
     };
 
@@ -134,8 +137,5 @@ export default class SettingsMenuButton extends myReactComponent<SettingsProps> 
             this.props.onApplyChanges();
         };
         // customMessage.send(this._oI18n.menu.SettingsMessage);
-    };
-    private static _log(message?: any, ...optionalParams: any[]) {
-        //console.log("MenuSettings", message, optionalParams);
     };
 }

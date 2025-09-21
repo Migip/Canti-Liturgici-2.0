@@ -5,8 +5,8 @@ import { Alert, Modal, View } from 'react-native';
 import { Button, Icon, Text } from 'react-native-elements';
 import { PopupStyles } from '../Styles/PopupStyle';
 import CustomButton from './CustomButton';
-import { IconNode } from '@rneui/base';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+//import { IconNode } from '@rneui/base';
+//import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { iconType, myIcons } from '../globals/constants/Icons';
 
 

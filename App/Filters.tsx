@@ -3,7 +3,7 @@ import React from 'react';
 import { GeneralStyles } from '../Styles/GeneralStyles';
 import SingleFilterButton, { oDataProperty } from './MinorComponents/SingleFilterButton';
 import myReactComponent from '../customComponents/myReactComponent';
-import { oData } from '../globals/classes/data';
+import { aFilterModel, oData } from '../globals/classes/data';
 import CustomButton from '../customComponents/CustomButton';
 import { usePreventRemoveContext } from '@react-navigation/native';
 import { Text } from 'react-native-elements';
@@ -15,7 +15,14 @@ import FlashMessage from 'react-native-flash-message';
 import { myIcons } from '../globals/constants/Icons';
 
 export declare type FiltersRouteParams = {
+    aNewValue?: aFilterModel
 };
+
+enum PressedFilter {
+    authors,
+    albums,
+    categories
+}
 
 declare type FiltersProps = {
     route: any,
@@ -38,6 +45,8 @@ export default class Filters extends myReactComponent<FiltersProps> {
     private _oCurrState: stateType;
     public readonly state: stateType;
     private _bRendered: boolean = false;
+    private _oPressedFilter?: PressedFilter;
+    protected _sCompName: string = "Filters";
 
     public constructor(props: any) {
         super(props);
@@ -62,13 +71,27 @@ export default class Filters extends myReactComponent<FiltersProps> {
                 aList: aCategories
             }
         };
-        //console.log('this.props.aList')
-        //console.log(this._oCurrState.aAlbums);
         this.state = this._oCurrState;
 
         this.props.navigation.addListener('focus', () => {
+            this._log("focus", this._oPressedFilter, this.props.route.params.aNewValue);
+            if (this._oPressedFilter !== undefined &&
+                this.props.route.params.aNewValue) {
+                switch (this._oPressedFilter) {
+                    case PressedFilter.albums:
+                        this._onApplyAlbumsFilters();
+                        break;
+                    case PressedFilter.authors:
+                        this._onApplyAuthorsFilters();
+                        break;
+                    case PressedFilter.categories:
+                        this._onApplyCategoriesFilters();
+                        break;
+                };
+            };
+            this._oPressedFilter = undefined;
             this._updateMyState();
-            customMessage.send(this._oI18n.filter.remember_apply);
+            //customMessage.send(this._oI18n.filter.remember_apply);
         });
     };
 
@@ -82,7 +105,7 @@ export default class Filters extends myReactComponent<FiltersProps> {
                     FiltersStyles.filtersView,
                     GeneralStyles.marginContainer
                 ]}>
-                    {/*<Text
+                {/*<Text
                     style={[
                         {
                             fontStyle: 'italic'
@@ -90,52 +113,80 @@ export default class Filters extends myReactComponent<FiltersProps> {
                     ]}>
                     {this._oI18n.filter.remember_apply}
                 </Text>*/}
-                    <View
-                        style={[
-                            GeneralStyles.flexVert,
-                            FiltersStyles.singleFiltersView
-                        ]}>
-                        <SingleFilterButton
-                            sTitle={this._oI18n.filter.author}
-                            aList={this.state.oAuthors.aList}
-                            sSelText={this.state.oAuthors.sSelText}
-                            sInfoExt={this._oI18n.filter.infoExt_aut}
-                            oNavigation={this.props.navigation} />
-                        <SingleFilterButton
-                            sTitle={this._oI18n.filter.album}
-                            aList={this.state.oAlbums.aList}
-                            sSelText={this.state.oAlbums.sSelText}
-                            sInfoExt={this._oI18n.filter.infoExt_alb}
-                            oNavigation={this.props.navigation} />
-                        <SingleFilterButton
-                            sTitle={this._oI18n.filter.category}
-                            aList={this.state.oCategories.aList}
-                            sSelText={this.state.oCategories.sSelText}
-                            sInfoExt={this._oI18n.filter.infoExt_cat}
-                            oNavigation={this.props.navigation} />
-                    </View>
-                    <View
-                        style={[
-                            FiltersStyles.filtersButtonView
-                        ]}>
-                        <CustomButton
-                            onPress={this._onClearFilters.bind(this)}
-                            icon={myIcons.clearFilters}
-                            title={this._oI18n.filter.clearSelection} />
-                        <CustomButton
+                <View
+                    style={[
+                        GeneralStyles.flexVert,
+                        FiltersStyles.singleFiltersView
+                    ]}>
+                    <SingleFilterButton
+                        sTitle={this._oI18n.filter.author}
+                        aList={this.state.oAuthors.aList}
+                        sSelText={this.state.oAuthors.sSelText}
+                        sInfoExt={this._oI18n.filter.infoExt_aut}
+                        onPress={this._onPressAuthorsFilters.bind(this)}
+                        oNavigation={this.props.navigation} />
+                    <SingleFilterButton
+                        sTitle={this._oI18n.filter.album}
+                        aList={this.state.oAlbums.aList}
+                        sSelText={this.state.oAlbums.sSelText}
+                        sInfoExt={this._oI18n.filter.infoExt_alb}
+                        onPress={this._onPressAlbumsFilters.bind(this)}
+                        oNavigation={this.props.navigation} />
+                    <SingleFilterButton
+                        sTitle={this._oI18n.filter.category}
+                        aList={this.state.oCategories.aList}
+                        sSelText={this.state.oCategories.sSelText}
+                        sInfoExt={this._oI18n.filter.infoExt_cat}
+                        onPress={this._onPressCategoriesFilters.bind(this)}
+                        oNavigation={this.props.navigation} />
+                </View>
+                <View
+                    style={[
+                        FiltersStyles.filtersButtonView
+                    ]}>
+                    <CustomButton
+                        onPress={this._onClearFilters.bind(this)}
+                        icon={myIcons.clearFilters}
+                        title={this._oI18n.filter.clearSelection} />
+                    {/*<CustomButton
                             onPress={this._onApplyFilters.bind(this)}
                             icon={myIcons.applyFilters}
-                            title={this._oI18n.filter.apply} />
-                    </View>
+                            title={this._oI18n.filter.apply} />*/}
+                </View>
             </SafeAreaView>
         );
     };
-    private _onApplyFilters() {
+
+    /*private _onApplyFilters() {
         this._oData.Authors = this._oCurrState.oAuthors.aList;
         this._oData.Albums = this._oCurrState.oAlbums.aList;
         this._oData.Categories = this._oCurrState.oCategories.aList;
         this.props.navigation.goBack();
         customMessage.send(this._oI18n.filter.msgApply);
+    };*/
+    private _onApplyAuthorsFilters() {
+        this._oData.Authors = this._oCurrState.oAuthors.aList;
+        this.props.navigation.goBack();
+        customMessage.send(this._oI18n.filter.msgApply);
+    };
+    private _onApplyAlbumsFilters() {
+        this._oData.Albums = this._oCurrState.oAlbums.aList;
+        this.props.navigation.goBack();
+        customMessage.send(this._oI18n.filter.msgApply);
+    };
+    private _onApplyCategoriesFilters() {
+        this._oData.Categories = this._oCurrState.oCategories.aList;
+        this.props.navigation.goBack();
+        customMessage.send(this._oI18n.filter.msgApply);
+    };
+    private _onPressAuthorsFilters() {
+        this._oPressedFilter = PressedFilter.authors;
+    };
+    private _onPressAlbumsFilters() {
+        this._oPressedFilter = PressedFilter.albums;
+    };
+    private _onPressCategoriesFilters() {
+        this._oPressedFilter = PressedFilter.categories;
     };
     private _onClearFilters() {
         this._oData.resetFilters();

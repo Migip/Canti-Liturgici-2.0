@@ -3,9 +3,11 @@ import { GestureResponderEvent, Pressable, Text, View } from 'react-native';
 import { aFilterModel, oFilterModel } from '../../globals/classes/data';
 import { GeneralStyles } from '../../Styles/GeneralStyles';
 import myReactComponent from '../../customComponents/myReactComponent';
-import { CheckBox, Icon } from '@rneui/themed';
+//import { CheckBox, Icon } from '@rneui/themed';
+import Checkbox from 'expo-checkbox';
 import { Button } from 'react-native-elements';
 import { FiltersStyles } from '../../Styles/FiltersStyles';
+import CustomCheckbox from '../../customComponents/CustomCheckbox';
 //import CustomButton from '../../customComponents/CustomButton';
 
 declare type FilterSelectionItemProps = {
@@ -47,11 +49,25 @@ export default class FilterSelectionItem extends myReactComponent<FilterSelectio
                         title={this.state.sValue}
                         onPress={this.onCheckboxPress.bind(this)}
                     />*/}
-                {<CheckBox
+                {/*<CheckBox
                     checked={this.props.oItem.selected}
                     title={this.props.oItem.value}
                     onPress={this.onCheckboxPress.bind(this)}
-                />}
+                />*/}
+                <CustomCheckbox
+                    title={this.props.oItem.value}
+                    value={this.props.oItem.selected}
+                    onPress={this.onCheckboxPress.bind(this)} />
+
+                {/*<Checkbox
+                    value={this.props.oItem.selected}
+                    onValueChange={this.onCheckboxPress.bind(this)} />
+                <Pressable
+                    onPress={this.onCheckboxPress.bind(this)}>
+                    <Text>
+                        {this.state.sValue}
+                    </Text>
+                </Pressable>*/}
                 {/*<CustomButton
                     title={this.props.oItem.value}
                     icon={this.props.oItem.selected ? 'square-check' : 'square'}

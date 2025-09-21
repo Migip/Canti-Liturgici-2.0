@@ -92,7 +92,6 @@ export default class ChantsList extends myReactComponent<ChantListProps> {
         /*this._sSearch = sSearch;
         this._sSetSearch = sSetSearch; */
         this.props.navigation.addListener('focus', (event: any) => {
-            //console.log(event, this._bRendered);
             //if (this._bRendered === true) {
             /*this._oCurrState.data = this._oData.getData(this._oCurrState.search);
             this.setState(this._oCurrState);*/

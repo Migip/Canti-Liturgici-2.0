@@ -23,7 +23,14 @@ export const FiltersStyles = StyleSheet.create({
         columnGap: 5
     },
     filterSelectionItemView: {
-        backgroundColor: 'white'
+        // columnGap: 10,
+        // alignItems: 'baseline',
+        // alignSelf: 'flex-start',
+        margin: 5
+        //backgroundColor: 'white'
+    },
+    filterSelectionView: {
+        rowGap: 15
     },
     filterSelectionButtons: {
         alignItems: 'center'

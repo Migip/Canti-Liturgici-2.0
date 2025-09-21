@@ -28,6 +28,7 @@ export default class i18n_it implements i18n {
     filter = {
         title: 'Filtri',
         remember_apply: 'Ricorda di premere su "Applica" se vuoi confermare i filtri.',
+        searchPlaceholder: 'Cerca...',
         album: 'Filtra per album',
         author: 'Filtra per autore',
         category: 'Filtra per categoria',

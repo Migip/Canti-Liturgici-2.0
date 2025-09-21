@@ -18,6 +18,7 @@ declare type i18n_list = {
 
 declare type i18n_filters = {
     title: string,
+    searchPlaceholder: string,
     remember_apply: string,
     album: string,
     author: string,

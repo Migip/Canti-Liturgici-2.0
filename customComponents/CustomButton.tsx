@@ -1,23 +1,9 @@
 import React from 'react';
-import { Button } from 'react-native-elements';
 import myReactComponent from './myReactComponent';
 import { GestureResponderEvent, TextStyle, ViewStyle } from 'react-native';
-import { GeneralStyles } from '../Styles/GeneralStyles';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { iconType } from '../globals/constants/Icons';
-// import { fas } from '@fortawesome/free-solid-svg-icons'
-// import { far } from '@fortawesome/free-regular-svg-icons'
-// import { fab } from '@fortawesome/free-brands-svg-icons'
-//library.add(fas, far, fab);
-//import { faShareNodes, faBars, faFilter, faInfoCircle, faTrashCan, faFilterCircleXmark, faSquare, faSquareCheck, faXmark, faGear, faChevronRight } from '@fortawesome/free-solid-svg-icons'
-//import { far } from '@fortawesome/free-regular-svg-icons'
-//import { fab } from '@fortawesome/free-brands-svg-icons'
-//library.add(faShareNodes, faBars, faFilter, faInfoCircle, faTrashCan, faFilterCircleXmark, faSquare, faSquareCheck, faXmark, faGear, faChevronRight);
-//  console.log("library");
+
 
 declare type CustomButtonProps = {
     title: string,
@@ -28,6 +14,7 @@ declare type CustomButtonProps = {
 };
 
 export default class CustomButton extends myReactComponent<CustomButtonProps> {
+    protected _sCompName: string = 'CustomButton';
     /**
      * render
      */
@@ -46,7 +33,7 @@ export default class CustomButton extends myReactComponent<CustomButtonProps> {
                 name={icon}
                 backgroundColor="#ffffffff"
                 color={'black'}
-                style={oStyle}
+                style={[oStyle]}
                 onPress={(event: GestureResponderEvent) => {
                     try {
                         this._log("onPress start", this.props.title);
@@ -79,8 +66,5 @@ export default class CustomButton extends myReactComponent<CustomButtonProps> {
                     //GeneralStyles.buttonIconContainer
                 ]} />*/}
         {/*type='outline'*/ }
-    };
-    private _log(message?: any, ...optionalParams: any[]) {
-        //console.log("CustomButton", message, optionalParams);
     };
 }

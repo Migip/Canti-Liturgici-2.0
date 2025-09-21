@@ -7,17 +7,14 @@ import { Routes } from '../../globals/routes/routes';
 import { FilterSelectionRouteParams } from '../FilterSelection';
 import i18n_class from '../../globals/i18n/i18n.general';
 import { Icon } from 'react-native-elements';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { FiltersStyles } from '../../Styles/FiltersStyles';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { myIcons } from '../../globals/constants/Icons';
 import { FontAwesome6 } from '@expo/vector-icons';
 
 
 export declare type oDataProperty = {
     sSelText: string,
-    aList: aFilterModel
+    aList: aFilterModel,
 }
 
 declare type SingleFilterButtonProps = {
@@ -26,7 +23,9 @@ declare type SingleFilterButtonProps = {
     //oDataProperty: oDataProperty,
     sSelText: string,
     oNavigation: any,
-    sInfoExt: string
+    sInfoExt: string,
+    //onApply: { (): void },
+    onPress: { (): void }
 };
 
 declare type stateType = {
@@ -34,7 +33,7 @@ declare type stateType = {
 };
 
 export default class SingleFilterButton extends myReactComponent<SingleFilterButtonProps> {
-
+    protected _sCompName: string = 'SingleFilterButton';
     private _oCurrState: stateType = {
         sSelText: ''
     };
@@ -92,15 +91,17 @@ export default class SingleFilterButton extends myReactComponent<SingleFilterBut
             </Pressable>)
     };
     public onFilterPress(oEvent: GestureResponderEvent) {
-        console.log(this.props.sTitle)
+        this._log(this.props.sTitle)
         let oFilterSelecitonProps: FilterSelectionRouteParams = {
             sTitle: this.props.sTitle,
             aList: this.props.aList,
-            sInfoExt: this.props.sInfoExt
+            sInfoExt: this.props.sInfoExt,
+            //onApply: this.props.onApply
             //aList: this.props.oDataProperty.aList,
             //oNavigation: this.props.oNavigation
-        }
-        this.props.oNavigation.navigate(Routes.FilterSelection, oFilterSelecitonProps)
+        };
+        this.props.oNavigation.navigate(Routes.FilterSelection, oFilterSelecitonProps);
+        this.props.onPress();
         //this.props.oNavigation.navigate(Routes.Details);
     };
     /*private _updateMyState() {

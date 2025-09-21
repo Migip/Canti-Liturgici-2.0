@@ -21,8 +21,8 @@ export const GeneralStyles = StyleSheet.create({
         // paddingRight: 10,
     },
     marginContainer: {
-        marginLeft: 5,
-        marginRight: 5,
+        marginLeft: 7,
+        marginRight: 7,
     },
     titleText: {
         fontSize: 30,
@@ -51,5 +51,12 @@ export const GeneralStyles = StyleSheet.create({
     },
     boldText: {
         fontWeight: 'bold'
-    }
+    },
+    checkboxView: {
+        columnGap: 10,
+        alignItems: 'center',
+        alignSelf: 'flex-start',
+        padding: 5,
+        //backgroundColor: 'white'
+    },
 });

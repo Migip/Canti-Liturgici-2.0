@@ -23,10 +23,11 @@ declare type NavigatorProps = {
 
 export default class Navigator extends myReactComponent<NavigatorProps> {
     private _stack = createNativeStackNavigator();
+    protected _bActiveLog: boolean = true;
 
     public constructor(props: any) {
         super(props);
-        console.log(`|------------ INIZIO APP ${Date().toString()} ------------|`);
+        this._log(`|------------ INIZIO APP ${Date().toString()} ------------|`);
     };
 
     public render() {

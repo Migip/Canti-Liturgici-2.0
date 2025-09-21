@@ -13,11 +13,16 @@ import CustomButton from '../customComponents/CustomButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FlashMessage from 'react-native-flash-message';
 import { myIcons } from '../globals/constants/Icons';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { Routes } from '../globals/routes/routes';
+import { FiltersRouteParams } from './Filters';
+import { customMessage } from '../globals/classes/customMessage';
 
 export declare type FilterSelectionRouteParams = {
     sTitle: string,
     aList: aFilterModel,
-    sInfoExt: string
+    sInfoExt: string,
+    //onApply: { (): void }
     //oNavigation: any
 };
 
@@ -49,7 +54,8 @@ export default class FilterSelection extends myReactComponent {
 
         this._oNavigation = this.props.navigation;
 
-        this._oNavigation.setOptions({
+        let oOptions: NativeStackNavigationOptions = {
+            title: `${this._oParams.sTitle}`,
             headerRight: () => (
                 <CustomButton
                     onPress={() => Alert.alert(this._oI18n.filter.info, this._oI18n.filter.infoExt.replace("&", this._oParams.sInfoExt))}
@@ -57,6 +63,20 @@ export default class FilterSelection extends myReactComponent {
                     //title={this._oI18n.FilterInfo} />
                     title={this._oI18n.filter.info} />
             ),
+        };
+        this._oNavigation.setOptions(oOptions);
+        /*this._oNavigation.setOptions({
+            headerRight: () => (
+                <CustomButton
+                    onPress={() => Alert.alert(this._oI18n.filter.info, this._oI18n.filter.infoExt.replace("&", this._oParams.sInfoExt))}
+                    icon={myIcons.singleFilterInfo}
+                    //title={this._oI18n.FilterInfo} />
+                    title={this._oI18n.filter.info} />
+            ),
+        });*/
+
+        this.props.navigation.addListener('focus', () => {
+            customMessage.send(this._oI18n.filter.remember_apply);
         });
     };
     public render() {
@@ -65,10 +85,11 @@ export default class FilterSelection extends myReactComponent {
             <SafeAreaView
                 style={[
                     GeneralStyles.pageContainer,
-                    GeneralStyles.marginContainer
+                    GeneralStyles.marginContainer,
+                    FiltersStyles.filterSelectionView
                 ]}>
                 <CustomSearchBar
-                    placeholder={this._oI18n.list.searchBarPlaceholder}
+                    placeholder={this._oI18n.filter.searchPlaceholder}
                     value={this.state.search}
                     onChangeText={this.onSearchBarChange.bind(this)} />
                 <View
@@ -77,18 +98,22 @@ export default class FilterSelection extends myReactComponent {
                         GeneralStyles.buttonBar,
                         FiltersStyles.filterSelectionButtons
                     ]}>
-                    <Text
-                        style={[
-                            GeneralStyles.boldText
-                        ]}>
-                        {this.state.sSelText}
-                    </Text>
-
+                    {/*singleFilterRemoveSelection*/}
                     <CustomButton
                         onPress={this._onClearPress.bind(this)}
-                        icon={myIcons.singleFilterRemoveSelection}
+                        icon={myIcons.clearFilters}
                         title={this._oI18n.filter.clearSelection} />
+                    <CustomButton
+                        onPress={this._onApply.bind(this)}
+                        icon={myIcons.applyFilters}
+                        title={this._oI18n.filter.apply} />
                 </View>
+                <Text
+                    style={[
+                        GeneralStyles.boldText
+                    ]}>
+                    {this.state.sSelText}
+                </Text>
                 <FlatList
                     data={this.state.data}
                     style={FiltersStyles.item}
@@ -112,10 +137,6 @@ export default class FilterSelection extends myReactComponent {
                 <StatusBar style='inverted' />*/}
             </SafeAreaView>)
     };
-    /*public onFilterPress(oEvent: GestureResponderEvent) {
-        //console.log(this._oParams.sTitle)
-        //this.props.oNavigation.navigate(Routes.Details);
-    };*/
     public onSearchBarChange(sNewQuery: string): void {
         let oSearchRegexp: RegExp;
         let aNewList: aFilterModel;
@@ -136,14 +157,8 @@ export default class FilterSelection extends myReactComponent {
             //No search
             aNewList = this._aAllList;
         };
-        //console.log(aNewList);
-        //console.log(this._oCurrState.data);
         this._oCurrState.data = [...aNewList];
         this.setState(this._oCurrState);
-        //console.log(this.state.data);
-        //let oData2 = oData.getInstance();
-        //console.log(oData2.getAuthors());
-        //console.log("Implementare query");
     };
 
     private _onClearPress() {
@@ -155,6 +170,17 @@ export default class FilterSelection extends myReactComponent {
         this._oCurrState.sSelText = this._updateSelText();
         this.setState(this._oCurrState);
     };
+
+    private _onApply() {
+        let oParams: FiltersRouteParams = {
+            aNewValue: this._oCurrState.data
+        };
+        this._oNavigation.navigate(Routes.Filters, oParams);
+    };
+    /*private _onApplyOld() {
+        this._oNavigation.goBack();
+        this._oParams.onApply();
+    };*/
 
     private _updateSelText(): string {
         let iLen = this._oCurrState.data.filter((item) => item.selected === true).length;
