@@ -124,24 +124,26 @@ export class oConfigClass {
     private static async _getLastConfig(): Promise<oConfigJson> {
         try {
 
-            let oLocalConstant: oConfigJson;
+            let oLocalConfig: oConfigJson;
             try {
                 //this._oInstance._oConfig = oConfigClass._fromStringToConfig(await oConfigClass._readFile(oConfigClass._sConfigPath));
-                //oLocalConstant = oConfigClass._fromStringToConfig(await oConfigClass._readFile(oConfigClass._sConfigPath));
-                oLocalConstant = oConfigClass._fromStringToConfig(await myFile.readDocumentFile(oConfigClass._sConfigPath));
+                //oLocalConfig = oConfigClass._fromStringToConfig(await oConfigClass._readFile(oConfigClass._sConfigPath));
+                oLocalConfig = oConfigClass._fromStringToConfig(await myFile.readDocumentFile(oConfigClass._sConfigPath));
             } catch (error) {
                 //this._oInstance._oConfig = { "appVersion": "", "link": "" };
-                oLocalConstant = oDefaultConfigJson;
+                oLocalConfig = oDefaultConfigJson;
             };
 
+            this._log(oLocalConfig);
             let oNetInfo: NetInfoState = await NetInfo.fetch();
             this._log("Internet", oNetInfo);
 
             if (oNetInfo.isConnected) {
+                this._log("downloadFileToTmp", oConfigClass._oConfigUrl, ConstFilePath.tmpConfig);
                 await myFile.downloadFileToTmp(oConfigClass._oConfigUrl, ConstFilePath.tmpConfig);
                 let oInternetConfig = oConfigClass._fromStringToConfig(await myFile.readTmpFile(ConstFilePath.tmpConfig));
-                this._log(oInternetConfig, oLocalConstant);
-                if (oInternetConfig.appVersion != oLocalConstant.appVersion) {
+                this._log(oInternetConfig, oLocalConfig);
+                if (oInternetConfig.appVersion != oLocalConfig.appVersion) {
                     if (oConfigClass._fSetBusyFunction) {
                         oConfigClass._fSetBusyFunction(BusyIndicator.downloading);
                     };
@@ -151,7 +153,7 @@ export class oConfigClass {
                     };
                 };
                 return oInternetConfig;
-            } else if (oLocalConstant === oDefaultConfigJson) {
+            } else if (oLocalConfig === oDefaultConfigJson) {
                 if (oConfigClass._fSetBusyFunction) {
                     oConfigClass._fSetBusyFunction(BusyIndicator.noInit);
                 };
@@ -164,7 +166,7 @@ export class oConfigClass {
                 }
                 return await this._getLastConfig();
             } else {
-                return oLocalConstant;
+                return oLocalConfig;
             };
         } catch (oError) {
             console.error("_getLastConfig", oError);

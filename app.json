@@ -2,7 +2,7 @@
   "expo": {
     "name": "Canti Liturgici",
     "slug": "CantiLiturgici",
-    "version": "2.0.0",
+    "version": "2.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -26,7 +26,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.app_canti_liturgici.CantiLiturgici"
+      "package": "org.nativescript.CantiLiturgici"
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -9,11 +9,11 @@ export class myFile {
 
 
     public static async downloadFileToTmp(sUrl: string, sDestPath: string) {
-        this._downloadFile(sUrl, FileSystem.cacheDirectory + sDestPath);
+        await this._downloadFile(sUrl, FileSystem.cacheDirectory + sDestPath);
     };
 
     public static async downloadFileToDocument(sUrl: string, sDestPath: string) {
-        this._downloadFile(sUrl, FileSystem.documentDirectory + sDestPath);
+        await this._downloadFile(sUrl, FileSystem.documentDirectory + sDestPath);
     };
 
     private static async _downloadFile(sUrl: string, sDestPath: string) {
@@ -23,6 +23,7 @@ export class myFile {
                 sUrl,
                 sDestPath
             );
+            this._log("_downloadFile completato", sUrl, sDestPath);
         } catch (error) {
             console.error(error);
         }
@@ -46,11 +47,11 @@ export class myFile {
 
 
     public static async readTmpFile(sPath: string, options?: FileSystem.ReadingOptions | undefined): Promise<string> {
-        return this._readFile(FileSystem.cacheDirectory + sPath, options);
+        return await this._readFile(FileSystem.cacheDirectory + sPath, options);
     };
 
     public static async readDocumentFile(sPath: string, options?: FileSystem.ReadingOptions | undefined): Promise<string> {
-        return this._readFile(FileSystem.documentDirectory + sPath, options);
+        return await this._readFile(FileSystem.documentDirectory + sPath, options);
     };
 
     private static async _readFile(sPath: string, options?: FileSystem.ReadingOptions | undefined): Promise<string> {
@@ -65,11 +66,11 @@ export class myFile {
 
 
     public static async removeTmpFileOrDir(sPath: string, options?: FileSystem.DeletingOptions): Promise<void> {
-        this._removeFileOrDir(FileSystem.cacheDirectory + sPath, options);
+        await this._removeFileOrDir(FileSystem.cacheDirectory + sPath, options);
     };
 
     public static async removeDocumentFileOrDir(sPath: string, options?: FileSystem.DeletingOptions): Promise<void> {
-        this._removeFileOrDir(FileSystem.documentDirectory + sPath, options);
+        await this._removeFileOrDir(FileSystem.documentDirectory + sPath, options);
     };
 
     private static async _removeFileOrDir(sPath: string, options?: FileSystem.DeletingOptions): Promise<void> {
@@ -83,11 +84,11 @@ export class myFile {
 
 
     public static async createTmpDir(sPath: string, options?: FileSystem.MakeDirectoryOptions | undefined): Promise<void> {
-        this._createDir(FileSystem.cacheDirectory + sPath, options);
+        await this._createDir(FileSystem.cacheDirectory + sPath, options);
     };
 
     public static async createDocumentDir(sPath: string, options?: FileSystem.MakeDirectoryOptions | undefined): Promise<void> {
-        this._createDir(FileSystem.documentDirectory + sPath, options);
+        await this._createDir(FileSystem.documentDirectory + sPath, options);
     };
 
     private static async _createDir(sPath: string, options?: FileSystem.MakeDirectoryOptions | undefined): Promise<void> {
@@ -101,11 +102,11 @@ export class myFile {
 
 
     public static async getTmpDirOrFileInfo(sPath: string): Promise<FileSystem.FileInfo> {
-        return this._getDirOrFileInfo(FileSystem.cacheDirectory + sPath);
+        return await this._getDirOrFileInfo(FileSystem.cacheDirectory + sPath);
     };
 
     public static async getDocumentDirOrFileInfo(sPath: string): Promise<FileSystem.FileInfo> {
-        return this._getDirOrFileInfo(FileSystem.documentDirectory + sPath);
+        return await this._getDirOrFileInfo(FileSystem.documentDirectory + sPath);
     };
 
     private static async _getDirOrFileInfo(sPath: string): Promise<FileSystem.FileInfo> {

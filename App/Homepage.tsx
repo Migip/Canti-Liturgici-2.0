@@ -9,6 +9,7 @@ import Menu from './Menu';
 import Navigator from './AppNavigator';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FlashMessage from 'react-native-flash-message';
+import { StatusBar } from 'expo-status-bar';
 
 
 declare type HomepageProps = {
@@ -52,6 +53,7 @@ export default class Homepage extends myReactComponent<HomepageProps> {
                     onOpenMenu={this.onOpenMenu.bind(this)} />
                 <FlashMessage
                     position={'bottom'} />
+                <StatusBar style='auto' />
             </Drawer>
             // </SafeAreaView>
         );

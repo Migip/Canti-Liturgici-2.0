@@ -67,7 +67,6 @@ export default class Navigator extends myReactComponent<NavigatorProps> {
                             title: this._oI18n.filter.title
                         }} />
                 </this._stack.Navigator>
-                <StatusBar style='auto' />
                 {/*<FlashMessage
                     position={'bottom'}
                     duration={3000}
