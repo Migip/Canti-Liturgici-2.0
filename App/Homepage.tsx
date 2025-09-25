@@ -33,29 +33,29 @@ export default class Homepage extends myReactComponent<HomepageProps> {
 
     public render() {
         return (
-            // <SafeAreaView
-            //     style={{flex: 1}}>
-            <Drawer
-                open={this.bDrawerState}
-                onOpen={(): void => {
-                    //this.bSwipe = true;
-                    this.bDrawerState = true;
-                }}
-                onClose={(): void => {
-                    this.bDrawerState = false;
-                }}
-                renderDrawerContent={() => {
-                    return <Menu
-                        onCloseMenu={this.onCloseMenu.bind(this)} />;
-                }}
-                swipeEnabled={this.bDrawerState}>
-                <Navigator
-                    onOpenMenu={this.onOpenMenu.bind(this)} />
-                <FlashMessage
-                    position={'bottom'} />
+            <SafeAreaView
+                style={{ flex: 1 }}>
+                <Drawer
+                    open={this.bDrawerState}
+                    onOpen={(): void => {
+                        //this.bSwipe = true;
+                        this.bDrawerState = true;
+                    }}
+                    onClose={(): void => {
+                        this.bDrawerState = false;
+                    }}
+                    renderDrawerContent={() => {
+                        return <Menu
+                            onCloseMenu={this.onCloseMenu.bind(this)} />;
+                    }}
+                    swipeEnabled={this.bDrawerState}>
+                    <Navigator
+                        onOpenMenu={this.onOpenMenu.bind(this)} />
+                    <FlashMessage
+                        position={'bottom'} />
+                </Drawer>
                 <StatusBar style='auto' />
-            </Drawer>
-            // </SafeAreaView>
+            </SafeAreaView>
         );
     };
 

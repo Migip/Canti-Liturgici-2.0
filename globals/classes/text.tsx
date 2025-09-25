@@ -60,7 +60,7 @@ export class myRichText {
         let aParts: string[] = this._sInput.split('§');
         aParts.forEach((sPart: string) => {
             if (sPart.length >= 4) {
-                let sKey: string = sPart.substring(0, 4);
+                let sKey: string = sPart.substring(0, 4).toLowerCase();
                 let sText: string = sPart.substring(4);
                 let sOutputTag: string;
                 let sAddText: string | undefined = undefined;
@@ -86,7 +86,7 @@ export class myRichText {
         aParts.reverse().forEach((sPart: string) => {
             iKey += 1;
             if (sPart.length >= 4) {
-                let sKey: string = sPart.substring(0, 4);
+                let sKey: string = sPart.substring(0, 4).toLowerCase();
                 if (aExcludeKey.find((sValue: string) => { return sValue === sKey }) === undefined) {
                     let sText: string = sPart.substring(4);
                     let sOutputTag: reactNativeTag;
@@ -154,7 +154,7 @@ export class myRichText {
         let aExcludeKey: string[] = this._idToExclude();
         aParts.forEach((sPart: string) => {
             if (sPart.length >= 4) {
-                let sKey: string = sPart.substring(0, 4);
+                let sKey: string = sPart.substring(0, 4).toLowerCase();
                 if (aExcludeKey.find((sValue: string) => { return sValue === sKey }) === undefined) {
                     let sText: string = sPart.substring(4);
                     let sOutputTag: HTMLtag;

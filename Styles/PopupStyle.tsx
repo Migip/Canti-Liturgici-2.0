@@ -34,6 +34,6 @@ export const PopupStyles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
-        marginBottom: 50
+        //marginBottom: 50
     }
 });

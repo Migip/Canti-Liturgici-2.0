@@ -166,17 +166,18 @@ export default class Filters extends myReactComponent<FiltersProps> {
     };*/
     private _onApplyAuthorsFilters() {
         this._oData.Authors = this._oCurrState.oAuthors.aList;
-        this.props.navigation.goBack();
+        //this.props.navigation.goBack();
+        this.props.navigation.popToTop();
         customMessage.send(this._oI18n.filter.msgApply);
     };
     private _onApplyAlbumsFilters() {
         this._oData.Albums = this._oCurrState.oAlbums.aList;
-        this.props.navigation.goBack();
+        this.props.navigation.popToTop();
         customMessage.send(this._oI18n.filter.msgApply);
     };
     private _onApplyCategoriesFilters() {
         this._oData.Categories = this._oCurrState.oCategories.aList;
-        this.props.navigation.goBack();
+        this.props.navigation.popToTop();
         customMessage.send(this._oI18n.filter.msgApply);
     };
     private _onPressAuthorsFilters() {
