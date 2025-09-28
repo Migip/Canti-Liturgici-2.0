@@ -25,7 +25,7 @@ declare type SingleFilterButtonProps = {
     oNavigation: any,
     sInfoExt: string,
     //onApply: { (): void },
-    onPress: { (): void }
+    // onPress: { (): void }
 };
 
 declare type stateType = {
@@ -101,7 +101,7 @@ export default class SingleFilterButton extends myReactComponent<SingleFilterBut
             //oNavigation: this.props.oNavigation
         };
         this.props.oNavigation.navigate(Routes.FilterSelection, oFilterSelecitonProps);
-        this.props.onPress();
+        // this.props.onPress();
         //this.props.oNavigation.navigate(Routes.Details);
     };
     /*private _updateMyState() {

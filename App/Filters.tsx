@@ -40,20 +40,23 @@ declare type stateType = {
 
 export default class Filters extends myReactComponent<FiltersProps> {
 
-    private _oParams: FiltersRouteParams;
+    // private _oParams: FiltersRouteParams;
     private _oData: oData = oData.getInstance();
     private _oCurrState: stateType;
     public readonly state: stateType;
     private _bRendered: boolean = false;
-    private _oPressedFilter?: PressedFilter;
+    // private _oPressedFilter?: PressedFilter;
     protected _sCompName: string = "Filters";
 
     public constructor(props: any) {
         super(props);
-        let aAuthors = JSON.parse(JSON.stringify(this._oData.Authors));
-        let aAlbums = JSON.parse(JSON.stringify(this._oData.Albums.slice()));
-        let aCategories = JSON.parse(JSON.stringify(this._oData.Categories.slice()));
-        this._oParams = props.route.params;
+        // let aAuthors = JSON.parse(JSON.stringify(this._oData.Authors));
+        // let aAlbums = JSON.parse(JSON.stringify(this._oData.Albums.slice()));
+        // let aCategories = JSON.parse(JSON.stringify(this._oData.Categories.slice()));
+        let aAuthors = this._oData.Authors;
+        let aAlbums = this._oData.Albums;
+        let aCategories = this._oData.Categories;
+        // this._oParams = props.route.params;
         this._oCurrState = {
             /*aAuthors: this._oData.getAuthors(),
             aAlbums:  this._oData.getAlbums(),
@@ -74,22 +77,22 @@ export default class Filters extends myReactComponent<FiltersProps> {
         this.state = this._oCurrState;
 
         this.props.navigation.addListener('focus', () => {
-            this._log("focus", this._oPressedFilter, this.props.route.params.aNewValue);
-            if (this._oPressedFilter !== undefined &&
-                this.props.route.params.aNewValue) {
-                switch (this._oPressedFilter) {
-                    case PressedFilter.albums:
-                        this._onApplyAlbumsFilters();
-                        break;
-                    case PressedFilter.authors:
-                        this._onApplyAuthorsFilters();
-                        break;
-                    case PressedFilter.categories:
-                        this._onApplyCategoriesFilters();
-                        break;
-                };
-            };
-            this._oPressedFilter = undefined;
+            // this._log("focus", this._oPressedFilter, this.props.route.params.aNewValue);
+            // if (this._oPressedFilter !== undefined &&
+            //     this.props.route.params.aNewValue) {
+            //     switch (this._oPressedFilter) {
+            //         case PressedFilter.albums:
+            //             this._onApplyAlbumsFilters();
+            //             break;
+            //         case PressedFilter.authors:
+            //             this._onApplyAuthorsFilters();
+            //             break;
+            //         case PressedFilter.categories:
+            //             this._onApplyCategoriesFilters();
+            //             break;
+            //     };
+            // };
+            // this._oPressedFilter = undefined;
             this._updateMyState();
             //customMessage.send(this._oI18n.filter.remember_apply);
         });
@@ -123,21 +126,21 @@ export default class Filters extends myReactComponent<FiltersProps> {
                         aList={this.state.oAuthors.aList}
                         sSelText={this.state.oAuthors.sSelText}
                         sInfoExt={this._oI18n.filter.infoExt_aut}
-                        onPress={this._onPressAuthorsFilters.bind(this)}
+                        // onPress={this._onPressAuthorsFilters.bind(this)}
                         oNavigation={this.props.navigation} />
                     <SingleFilterButton
                         sTitle={this._oI18n.filter.album}
                         aList={this.state.oAlbums.aList}
                         sSelText={this.state.oAlbums.sSelText}
                         sInfoExt={this._oI18n.filter.infoExt_alb}
-                        onPress={this._onPressAlbumsFilters.bind(this)}
+                        // onPress={this._onPressAlbumsFilters.bind(this)}
                         oNavigation={this.props.navigation} />
                     <SingleFilterButton
                         sTitle={this._oI18n.filter.category}
                         aList={this.state.oCategories.aList}
                         sSelText={this.state.oCategories.sSelText}
                         sInfoExt={this._oI18n.filter.infoExt_cat}
-                        onPress={this._onPressCategoriesFilters.bind(this)}
+                        // onPress={this._onPressCategoriesFilters.bind(this)}
                         oNavigation={this.props.navigation} />
                 </View>
                 <View
@@ -164,36 +167,39 @@ export default class Filters extends myReactComponent<FiltersProps> {
         this.props.navigation.goBack();
         customMessage.send(this._oI18n.filter.msgApply);
     };*/
-    private _onApplyAuthorsFilters() {
-        this._oData.Authors = this._oCurrState.oAuthors.aList;
-        //this.props.navigation.goBack();
-        this.props.navigation.popToTop();
-        customMessage.send(this._oI18n.filter.msgApply);
-    };
-    private _onApplyAlbumsFilters() {
-        this._oData.Albums = this._oCurrState.oAlbums.aList;
-        this.props.navigation.popToTop();
-        customMessage.send(this._oI18n.filter.msgApply);
-    };
-    private _onApplyCategoriesFilters() {
-        this._oData.Categories = this._oCurrState.oCategories.aList;
-        this.props.navigation.popToTop();
-        customMessage.send(this._oI18n.filter.msgApply);
-    };
-    private _onPressAuthorsFilters() {
-        this._oPressedFilter = PressedFilter.authors;
-    };
-    private _onPressAlbumsFilters() {
-        this._oPressedFilter = PressedFilter.albums;
-    };
-    private _onPressCategoriesFilters() {
-        this._oPressedFilter = PressedFilter.categories;
-    };
+    // private _onApplyAuthorsFilters() {
+    //     this._oData.Authors = this._oCurrState.oAuthors.aList;
+    //     //this.props.navigation.goBack();
+    //     this.props.navigation.popToTop();
+    //     customMessage.send(this._oI18n.filter.msgApply);
+    // };
+    // private _onApplyAlbumsFilters() {
+    //     this._oData.Albums = this._oCurrState.oAlbums.aList;
+    //     this.props.navigation.popToTop();
+    //     customMessage.send(this._oI18n.filter.msgApply);
+    // };
+    // private _onApplyCategoriesFilters() {
+    //     this._oData.Categories = this._oCurrState.oCategories.aList;
+    //     this.props.navigation.popToTop();
+    //     customMessage.send(this._oI18n.filter.msgApply);
+    // };
+    // private _onPressAuthorsFilters() {
+    //     this._oPressedFilter = PressedFilter.authors;
+    // };
+    // private _onPressAlbumsFilters() {
+    //     this._oPressedFilter = PressedFilter.albums;
+    // };
+    // private _onPressCategoriesFilters() {
+    //     this._oPressedFilter = PressedFilter.categories;
+    // };
     private _onClearFilters() {
         this._oData.resetFilters();
-        let aAuthors = JSON.parse(JSON.stringify(this._oData.Authors));
-        let aAlbums = JSON.parse(JSON.stringify(this._oData.Albums));
-        let aCategories = JSON.parse(JSON.stringify(this._oData.Categories));
+        // let aAuthors = JSON.parse(JSON.stringify(this._oData.Authors));
+        // let aAlbums = JSON.parse(JSON.stringify(this._oData.Albums));
+        // let aCategories = JSON.parse(JSON.stringify(this._oData.Categories));
+        let aAuthors = this._oData.Authors;
+        let aAlbums = this._oData.Albums;
+        let aCategories = this._oData.Categories;
         this._oCurrState = {
             /*aAuthors: this._oData.getAuthors(),
             aAlbums:  this._oData.getAlbums(),

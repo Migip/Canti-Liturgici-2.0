@@ -43,7 +43,8 @@ export default class FilterSelection extends myReactComponent {
     public constructor(props: any) {
         super(props);
         this._oParams = props.route.params;
-        this._aAllList = this._oParams.aList;
+        // this._aAllList = this._oParams.aList;
+        this._aAllList = JSON.parse(JSON.stringify(this._oParams.aList));
         this._oCurrState = {
             search: '',
             data: this._aAllList,
@@ -172,10 +173,21 @@ export default class FilterSelection extends myReactComponent {
     };
 
     private _onApply() {
-        let oParams: FiltersRouteParams = {
-            aNewValue: this._oCurrState.data
-        };
-        this._oNavigation.navigate(Routes.Filters, oParams);
+        // let oParams: FiltersRouteParams = {
+        //     aNewValue: this._oCurrState.data
+        // };
+        // this._oNavigation.navigate(Routes.Filters, oParams);
+        this._oCurrState.data.forEach((oCurrentFilter) => {
+            let oFound = this._oParams.aList.find(
+                (oFilter) => {
+                    return oFilter.value === oCurrentFilter.value
+                });
+            if (oFound) {
+                oFound.selected = oCurrentFilter.selected;
+            };
+        });
+        this._oNavigation.popToTop();
+        customMessage.send(this._oI18n.filter.msgApply);
     };
     /*private _onApplyOld() {
         this._oNavigation.goBack();
