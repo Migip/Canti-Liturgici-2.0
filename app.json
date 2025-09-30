@@ -2,7 +2,7 @@
   "expo": {
     "name": "Canti Liturgici",
     "slug": "CantiLiturgici",
-    "version": "2.0.4",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -35,6 +35,9 @@
       "eas": {
         "projectId": "e772c1fe-539e-4edc-8cd5-20a24c5837a4"
       }
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }

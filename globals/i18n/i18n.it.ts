@@ -16,15 +16,8 @@ export default class i18n_it implements i18n {
         chargeDescription: 'Caricamento in corso. Attendere.',
         noInitDescription: 'Connettere alla rete per caricare i canti.'
     };
-    /*filtersButton = 'Filtri';
-    searchBarPlaceholder = 'Titolo/Numero';
-    numberChantListHeader = 'N°';
-    titleChantListHeader = 'Canto';
-    menuButton = 'Menù';
-    emptyList = 'Nessun canto trovato';
-    progressDescription = "Stiamo scaricando l'ultima versione dei canti. Attendere senza chiudere l'app.";
-    chargeDescription = 'Caricamento in corso. Attendere.';*/
-    //Homepage - Filters
+    
+    //Filters
     filter = {
         title: 'Filtri',
         remember_apply: 'Ricorda di premere su "Applica" se vuoi confermare i filtri.',
@@ -44,20 +37,7 @@ export default class i18n_it implements i18n {
         msgApply: 'Filtri applicati',
         msgClear: 'Filtri rimossi',
     };
-    /*filtersTitle = 'Filtri';
-    AlbumFilter = 'Filtra per album';
-    AuthorFilter = 'Filtra per autore';
-    CategoryFilter = 'Filtra per categoria';
-    FilterNoSelection = 'Seleziona';
-    FilterSomeSelection = ' selezionati';
-    FilterClearSelection = 'Rimuovi selezione';
-    FilterApply: string = 'Applica';
-    FilterInfo: string = 'Info';
-    FilterInfoExt: string = 'In questa pagina puoi selezionare quali & vuoi vedere nella pagina principale';
-    FilterInfoExt_alb: string = 'album';
-    FilterInfoExt_aut: string = 'autori';
-    FilterInfoExt_cat: string = 'categorie';*/
-    //Homepage - Menù
+
     //Chant Details
     detail = {
         title: 'Dettaglio canto',
@@ -65,8 +45,8 @@ export default class i18n_it implements i18n {
         share: 'Condividi in PDF',
         error: 'Errore nel caricamento, riprovare'
     };
-    //chantDetailTitle = 'Dettaglio canto'
 
+    //Homepage - Menù
     menu = {
         PopupClose: 'Chiudimi',
         AppInfoButton: 'Info',
@@ -79,6 +59,7 @@ export default class i18n_it implements i18n {
         SettingsTextExample: 'Testo esemplificativo',
         SettingsMessage: 'Impostazioni modificate',
         BackButton: 'Torna a Lista canti',
+        OkButton: 'OK',
     };
 
 

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Settings } from '../globals/classes/settings';
 
 export const ChantsListStyles = StyleSheet.create({
     lineContainer: {
@@ -14,24 +15,24 @@ export const ChantsListStyles = StyleSheet.create({
         //height: 30,
     },
     itemSeparator: {
-          borderBottomWidth: 1
+        borderBottomWidth: 1
     },
     itemNumber: {
         flex: 4,
-        fontSize: 20,
+        fontSize: Settings.nGeneralTextSize + 6,
         textAlign: 'right',
         paddingRight: 20,
         fontWeight: 'bold',
     },
     itemNumberF: {
         fontWeight: 'bold',
-        fontSize: 20,
+        fontSize: Settings.nGeneralTextSize + 6,
         textAlign: 'right',
         paddingRight: 20
     },
     itemNotNumber: {
         flex: 20,
-        fontSize: 20,
+        fontSize: Settings.nGeneralTextSize + 6,
         textAlign: 'left',
         paddingLeft: 20,
         fontWeight: 'bold',
@@ -51,5 +52,6 @@ export const ChantsListStyles = StyleSheet.create({
     },
     itemAlbumF: {
         fontStyle: 'normal'
-    }
+    },
+
 });

@@ -31,7 +31,8 @@ export default class SettingsMenuButton extends myReactComponent<SettingsProps> 
         this._oCurrState = {
             settings: {
                 bHideSecondVoices: Settings.bHideSecondVoices,
-                nChantTextSize: Settings.nChantTextSize
+                nChantTextSize: Settings.nChantTextSize,
+                nGeneralTextSize: Settings.nGeneralTextSize,
             }
         };
         this._log("constructor", this._oCurrState);

@@ -9,7 +9,7 @@ export default class NoneText extends myReactComponent<myTextProps> {
      */
     public render() {
         return (
-            <Text>
+            <Text style={{ fontWeight: 'normal', fontStyle: 'normal' }}>
                 {this.props.sText}
                 {this.props.oSon}
             </Text>

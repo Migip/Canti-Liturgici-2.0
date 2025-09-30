@@ -13,7 +13,7 @@ export default class BoldText extends myReactComponent<myTextProps>  {
      */
     public render() {
         return (
-            <Text style={{ fontWeight: 'bold' }}>
+            <Text style={{ fontWeight: 'bold', fontStyle: 'normal' }}>
                 {this.props.sText}
                 {this.props.oSon}
             </Text>

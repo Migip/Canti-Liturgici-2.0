@@ -1,7 +1,4 @@
-//import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Alert, FlatList, GestureResponderEvent, Pressable, Text, View, Button, NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import ChantsList from './ChantsList';
 import ChantText from './ChantText';
@@ -10,10 +7,6 @@ import { Routes } from '../globals/routes/routes';
 import myReactComponent from '../customComponents/myReactComponent';
 import FilterSelection from './FilterSelection';
 import { NavigationContainer } from '@react-navigation/native';
-import Homepage from './Homepage';
-import FlashMessage from 'react-native-flash-message';
-import { PopupStyles } from '../Styles/PopupStyle';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomButton from '../customComponents/CustomButton';
 import { myIcons } from '../globals/constants/Icons';
 
@@ -67,11 +60,6 @@ export default class Navigator extends myReactComponent<NavigatorProps> {
                             title: this._oI18n.filter.title
                         }} />
                 </this._stack.Navigator>
-                {/*<FlashMessage
-                    position={'bottom'}
-                    duration={3000}
-                    style={PopupStyles.FlashMessages}
-                />*/}
             </NavigationContainer>
         );
     };

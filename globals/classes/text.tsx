@@ -80,6 +80,7 @@ export class myRichText {
 
     private _formatRN(): void {
         let sInput: string = this._sInput;
+        this._log(sInput);
         let iKey: number = 0;
         let aParts: string[] = sInput.split('§');
         let aExcludeKey: string[] = this._idToExclude();
@@ -273,6 +274,7 @@ export class myRichText {
 
 
     private _addRNText(sText: string, sToAdd: string, iKey: number) {
+        this._log("_addRNText", sText, sToAdd);
         this._oRNOutput = <NoneText sText={sText} oSon={this._oRNOutput} key={iKey.toString()} />;
         this._oRNOutput = <BoldText sText={sToAdd} oSon={this._oRNOutput} key={iKey.toString()} />;
         //this._aRNOutput.push(<BoldText text={sTag} key={iKey.toString()} />);
@@ -281,6 +283,7 @@ export class myRichText {
 
     private _addRNTag(sText: string, sTag: ReactNode, iKey: number) {
         let oTextToAdd: ReactNode;
+        this._log("_addRNTag", sText, sTag);
         switch (sTag) {
             case reactNativeTag.bold:
                 oTextToAdd = <BoldText sText={sText} oSon={this._oRNOutput} key={iKey.toString()} />
@@ -335,5 +338,9 @@ export class myRichText {
             // console.log("secondVoicesId", []);
             return [];
         };
+    };
+
+    private _log(message?: any, ...optionalParams: any[]) {
+        //console.log('text.tsx', message, optionalParams);
     };
 }

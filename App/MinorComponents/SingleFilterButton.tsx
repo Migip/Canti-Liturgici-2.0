@@ -59,7 +59,8 @@ export default class SingleFilterButton extends myReactComponent<SingleFilterBut
                 <View
                     style={[
                         GeneralStyles.flexHoriz,
-                        GeneralStyles.spaceBetween
+                        GeneralStyles.spaceBetween,
+                        {alignItems: 'center'}
                     ]}>
                     <Text
                         style={[

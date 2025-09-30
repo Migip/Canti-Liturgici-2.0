@@ -9,7 +9,7 @@ export default class ItalicText extends myReactComponent<myTextProps> {
      */
     public render() {
         return (
-            <Text style={{ fontStyle: 'italic' }}>
+            <Text style={{ fontStyle: 'italic', fontWeight: 'normal' }}>
                 {this.props.sText}
                 {this.props.oSon}
             </Text>

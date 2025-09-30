@@ -1,4 +1,4 @@
-import { Text, View, ScrollView, GestureResponderEvent } from 'react-native';
+import { Text, ScrollView, GestureResponderEvent } from 'react-native';
 import React, { ReactNode } from 'react';
 import myReactComponent from '../customComponents/myReactComponent';
 import { GeneralStyles } from '../Styles/GeneralStyles';
@@ -12,7 +12,6 @@ import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import { Settings } from '../globals/classes/settings';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import FlashMessage from 'react-native-flash-message';
 import { myIcons } from '../globals/constants/Icons';
 import { Gesture, GestureDetector, GestureHandlerRootView, GestureStateChangeEvent, GestureUpdateEvent, PinchGestureChangeEventPayload, PinchGestureHandlerEventPayload } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
@@ -37,11 +36,7 @@ declare type stateType = {
 
 export default class ChantText extends myReactComponent<ChantTextProps> {
     private _params: ChantTextRouteParams;
-    private _oCurrState: stateType;/* = {
-        //chantText: this._oI18n.detail.loading
-        chantText: <Text>{this._oI18n.detail.loading}</Text>,
-        nFontSize: Settings.nChantTextSize
-    };*/
+    private _oCurrState: stateType;
     private _sOriginalText: string = '';
     protected _sCompName: string = "ChantText";
     public state: stateType;
@@ -51,26 +46,6 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
         this._params = props.route.params;
 
         this._oCurrState = this.getDefaultState();
-        /*this._oCurrState = {
-            chantText: <Text>{this._oI18n.detail.loading}</Text>,
-            nFontSize: Settings.nChantTextSize
-        };
-        myFile.readDocumentFile(ConstFilePath.mainCanti + this._params.oJsonLine.number + '.txt')
-            .then(
-                (sString: string) => {
-                    this._sOriginalText = sString;
-                    this._oCurrState.chantText = myRichText.formatRN(this._sOriginalText);
-                    this.setState(this._oCurrState);
-                    //this._oCurrState.chantText = myRichText.formatExpoHtml(this._sOriginalText);
-                }
-            )
-            .catch(
-                (oReason: any) => {
-                    console.error(oReason);
-                    this._oCurrState.chantText = <Text>{this._oI18n.detail.error}</Text>;
-                    this.setState(this._oCurrState);
-                }
-            );*/
         this.initView();
 
         let oOptions: NativeStackNavigationOptions = {
@@ -98,27 +73,8 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
 
     public render() {
         const oPinch = Gesture.Pinch()
-            // .onEnd((oEvent: GestureStateChangeEvent<PinchGestureHandlerEventPayload>, bSuccess: boolean) => {
-            //     'worklet';
-            //     try {
-            //         this.onPinchEndJs.bind(this)(oEvent, bSuccess);
-            //     } catch (error) {
-            //         console.error(error, oEvent, bSuccess, this);
-            //     };
-            // })
             .onEnd(this.onPinchEnd.bind(this))
             .onChange(this.onPinchChange.bind(this));
-        // .onChange((oEvent: GestureUpdateEvent<PinchGestureHandlerEventPayload & PinchGestureChangeEventPayload>) => {
-        //     'worklet';
-        //     try {
-        //         this.onPinchChangeJs.bind(this)(oEvent);
-        //     } catch (error) {
-        //         console.error(error, oEvent, this);
-        //     };
-        // });
-        /*<Markdown>
-            {this._oCurrState.chantText}
-        </Markdown>*/
         return (
             <SafeAreaView
                 style={[
@@ -126,7 +82,6 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
                 ]}>
                 <ScrollView
                     style={[
-                        // GeneralStyles.pageContainer
                         ChantTextStyles.text
                     ]}>
                     <GestureHandlerRootView>
@@ -142,17 +97,12 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
                     title={this._oI18n.detail.share}
                     icon={myIcons.share}
                     onPress={this.onShare.bind(this)} />
-                {/*icon={<Icon
-                             name="shareNodes"
-                             type="font-awesome"/>}*/}
-                {/*<FlashMessage />*/}
             </SafeAreaView>
         );
     };
 
     public onShare(event: GestureResponderEvent): void {
         Print.printToFileAsync({
-            //html: this._oCurrState.chantText
             html: myRichText.formatHtml(
                 this._sOriginalText,
                 this._params.oJsonLine.title,
@@ -174,7 +124,6 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
 
     public onPinchEnd(oEvent: GestureStateChangeEvent<PinchGestureHandlerEventPayload>, bSuccess: boolean) {
         //'worklet';
-        //this.nFontSize = this.nFontSize * oEvent.scale;
         runOnJS(this.onPinchEndJs.bind(this))(oEvent, bSuccess);
     };
 
@@ -185,7 +134,6 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
     public onPinchChange(oEvent: GestureUpdateEvent<PinchGestureHandlerEventPayload & PinchGestureChangeEventPayload>) {
         //'worklet';
         runOnJS(this.onPinchChangeJs.bind(this))(oEvent);
-        //this.nFontSizeTmp = Settings.normalizeTextSize(this.nFontSize * oEvent.scale);
     };
 
     public onPinchChangeJs(oEvent: GestureUpdateEvent<PinchGestureHandlerEventPayload & PinchGestureChangeEventPayload>) {

@@ -61,6 +61,7 @@ declare type i18n_menu = {
     SettingsTextExample: string,
     SettingsMessage: string,
     BackButton: string,
+    OkButton: string,
 };
 
 export interface i18n {

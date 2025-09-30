@@ -1,9 +1,11 @@
+import { Platform } from "react-native";
 import { ConstFilePath } from "../constants/File";
 import { myFile } from "./file";
 
 export declare type SettingsType = {
     bHideSecondVoices: boolean,
-    nChantTextSize: number
+    nChantTextSize: number,
+    nGeneralTextSize: number
 }
 const textSizeInt: Record<string, number> = {
     min: 16,
@@ -11,7 +13,8 @@ const textSizeInt: Record<string, number> = {
 };
 const oDefaultSettings: SettingsType = {
     bHideSecondVoices: true,
-    nChantTextSize: 20
+    nChantTextSize: 20,
+    nGeneralTextSize: Platform.OS === 'ios' ? 17 : 14
 };
 
 export class Settings {
@@ -52,6 +55,19 @@ export class Settings {
     public static set nChantTextSize(bNewValue: number) {
         this._oInstance.nChantTextSize = bNewValue;
     };
+
+    public static get nGeneralTextSize(): number {
+        this._logTextSize("get nGeneralTextSize", this._oInstance);
+        if (this._oInstance) {
+            return this._oInstance.nGeneralTextSize;
+        } else {
+            return oDefaultSettings.nGeneralTextSize
+        };
+    };
+    public static set nGeneralTextSize(bNewValue: number) {
+        this._oInstance.nGeneralTextSize = bNewValue;
+    };
+    
     private static async _saveNewConfig(oValues: SettingsType) {
         this._logGeneral("_saveNewConfig", oValues);
         myFile.writeDocumentFile(ConstFilePath.mainSettings, JSON.stringify(oValues));
@@ -105,6 +121,15 @@ export class Settings {
     public set nChantTextSize(bNewValue: number) {
         Settings._logTextSize("bNewValue", bNewValue);
         this._oSettings.nChantTextSize = Settings.normalizeTextSize(bNewValue);
+        this._saveNewConfig();
+    };
+    public get nGeneralTextSize(): number {
+        Settings._logTextSize("this._oSettings.nGeneralTextSize", this._oSettings.nChantTextSize);
+        return this._oSettings.nChantTextSize;
+    };
+    public set nGeneralTextSize(nNewValue: number) {
+        Settings._logTextSize("nNewValue", nNewValue);
+        this._oSettings.nGeneralTextSize = Settings.normalizeTextSize(nNewValue);
         this._saveNewConfig();
     };
     private _saveNewConfig() {

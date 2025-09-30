@@ -1,4 +1,4 @@
-import { FlatList, GestureResponderEvent, Text, View } from 'react-native';
+import { FlatList, GestureResponderEvent, PixelRatio, Text, View } from 'react-native';
 import { ChantsListStyles } from '../Styles/ChantsListStyles';
 import { oData, aSummaryJsonData } from '../globals/classes/data';
 import React from 'react';
@@ -8,13 +8,10 @@ import ChantListItem from './MinorComponents/ChantListItem';
 import { GeneralStyles } from '../Styles/GeneralStyles';
 import myReactComponent from '../customComponents/myReactComponent';
 import { FiltersRouteParams } from './Filters';
-import { Icon } from 'react-native-elements';
 import CustomButton from '../customComponents/CustomButton';
 import CustomProgressIndicator from '../customComponents/CustomProgressIndicator';
 import { BusyIndicator } from '../globals/constants/tsGeneral';
-import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import FlashMessage from 'react-native-flash-message';
 import { myIcons } from '../globals/constants/Icons';
 
 declare type ChantListProps = {
@@ -31,70 +28,22 @@ declare type stateType = {
 };
 
 export default class ChantsList extends myReactComponent<ChantListProps> {
-    //private _oData: oData | undefined = undefined;// = oData.getInstance(this.setBusy.bind(this),this.setStateData.bind(this));
-    //private _sSearch: string = '';
     private _oCurrState: stateType = {
         search: '',
         data: [],
         busy: BusyIndicator.charging,
         nFilters: 0
-    };/* = {
-        search: '',
-        data: this._oData.getData()
-    };*/
+    };
     private _oNavigation;
-    //private _bRendered: boolean = false;
-    //private _bBusyIndicator: boolean = false;
     public readonly state: stateType;
-    //public that = this;
-    //private searchQuery: string;
-    //private setSearchQuery: Dispatch<SetStateAction<string>>;
-    /*public _test: React.Dispatch<React.SetStateAction<boolean>>;
-    public _bDialogIsVisible: boolean = false;*/
-    /*state = {
-        search: '',
-      };*/
 
     public constructor(props: any) {
         super(props);
         this._oNavigation = props.navigation;
-        /*this._oCurrState = {
-            search: '',
-            data: this._oData.getData()
-        }*/
-        //this._oCurrState = {
-        /*this._State = {
-            search: '',
-            data: this._oData.getData(),
-            busy: false
-        };*/
-        //this.state = this._oCurrState;
         this.state = this._State;
 
-        // this._oNavigation.setOptions({
-        //     headerLeft: () => (
-        //         <CustomButton
-        //             onPress={this.onPressMenu.bind(this)}
-        //             icon={myIcons.menu}
-        //             title={this._oI18n.list.menuButton}
-        //             noBorder />
-        //     ),
-        // });
         this.setFilterButton();
-        //this.setState(this._oCurrState);
-        //this.state = this._oState;
-        //[this.searchQuery, this.setSearchQuery] = useState('')
-        /*const [bDialogIsVisible, test] = useState(false);
-        this._bDialogIsVisible = bDialogIsVisible
-        this._test = test;*/
-        //[this._sSearch, this.setSearchQuery] = useState('');
-        //const [sSearch,sSetSearch] = useState('');
-        /*this._sSearch = sSearch;
-        this._sSetSearch = sSetSearch; */
         this.props.navigation.addListener('focus', (event: any) => {
-            //if (this._bRendered === true) {
-            /*this._oCurrState.data = this._oData.getData(this._oCurrState.search);
-            this.setState(this._oCurrState);*/
             this.Busy = BusyIndicator.charging;
             oData.getInstance(this.setBusy.bind(this), this.setStateData.bind(this))
                 .getData(this._oCurrState.search)
@@ -103,47 +52,16 @@ export default class ChantsList extends myReactComponent<ChantListProps> {
                         this._oCurrState.nFilters = oData.getInstance().getNumberOfSelected();
                         this.StateData = aData;
                         this.setFilterButton();
-                        //this.setState(this._oCurrState);
                     }
                 );
             this.setState(this._State);
-            //this.StateData = this._oData.getData(this._oCurrState.search);
-            //};
         });
     };
 
     public render() {
-        //this._bRendered = true;
-        /*const [sSearch,sSetSearch] = useState<string>('');
-        this._sSearch = sSearch;
-        this._sSetSearch = sSetSearch;*/
-        //[this._bDialogIsVisible, this._mDialogIsVisible] = useState(false);
-        //const { search } = this.state;
         if (this.Busy === BusyIndicator.none) {
             return (
                 <SafeAreaView style={GeneralStyles.pageContainer}>
-                    {/*<Text
-                    style={styles.titleText}>{this._oI18n.appTitle}</Text>*/}
-                    {/*<View
-                        style={[
-                            GeneralStyles.buttonBar,
-                            GeneralStyles.flexHoriz
-                        ]}>*/}
-                    {/*<CustomButton
-                            onPress={this.onPressMenu.bind(this)}
-                            icon={'bars'}
-                            title={this._oI18n.list.menuButton} />*/}
-                    {/*<CustomButton
-                            onPress={this.onPressFilter.bind(this)}
-                            icon={'filter'}
-                            title={`${this._oI18n.list.filtersButton} (${this._oCurrState.nFilters.toString()})`} />*/}
-                    {/*</View>*/}
-                    {/*<SearchBar
-                    placeholder="Titolo/Numero canto"
-                    onChangeText={(search)=>{ setSearchQuery(search) }}
-                    value={searchQuery}
-                    platform='default'
-                />*/}
                     <CustomSearchBar
                         placeholder={this._oI18n.list.searchBarPlaceholder}
                         value={this.state.search}
@@ -163,7 +81,6 @@ export default class ChantsList extends myReactComponent<ChantListProps> {
                         renderItem={({ item }) =>
                             <ChantListItem
                                 oItem={item}
-                                //oData={this._oData}
                                 oNavigation={this._oNavigation} />
                         }
                         ListEmptyComponent={
@@ -174,32 +91,6 @@ export default class ChantsList extends myReactComponent<ChantListProps> {
                             </View>
                         }
                     />
-                    {/*
-                        ListHeaderComponent={
-                            <View
-                                style={[
-                                    GeneralStyles.flexHoriz,
-                                    ChantsListStyles.lineContainer,
-                                    ChantsListStyles.itemSeparator
-                                ]}>
-                                <Text
-                                    style={
-                                        ChantsListStyles.itemNumber
-                                    }>
-                                    {this._oI18n.list.numberHeader}
-                                </Text>
-                                <Text
-                                    style={
-                                        ChantsListStyles.itemNotNumber
-                                    }>
-                                    {this._oI18n.list.titleHeader}
-                                </Text>
-                            </View>
-                        }*/}
-                    {/*<Dialog
-                    isVisible={this._bDialogIsVisible}
-                    onBackdropPress={this._closeDialog}/>
-                <StatusBar style='inverted' />*/}
                 </SafeAreaView>
             )
 
@@ -219,11 +110,6 @@ export default class ChantsList extends myReactComponent<ChantListProps> {
                     sDescription = this._oI18n.list.chargeDescription;
                     break;
             }
-            {/*if (this._oCurrState.data.length > 0) {
-                sDescription = this._oI18n.list.progressDescription;
-            } else {
-                sDescription = this._oI18n.list.chargeDescription;
-            };*/}
             return (
                 <SafeAreaView style={GeneralStyles.pageContainer}>
                     <CustomProgressIndicator
@@ -232,29 +118,18 @@ export default class ChantsList extends myReactComponent<ChantListProps> {
                         description={
                             sDescription
                         } />
-                    {/*<FlashMessage />*/}
                 </SafeAreaView>
             )
         };
     };
     private onPressFilter(oEvent: GestureResponderEvent) {
-        //this._bDialogIsVisible = true;
-        //this._test(true);
-        let oParams: FiltersRouteParams = {
-            //oData: this._oData
-        };
-        this._oNavigation.navigate(Routes.Filters, oParams);
-    };
-    private onPressMenu(oEvent: GestureResponderEvent) {
-        if (this.props.onOpenMenu) {
-            //this.setFilterButton(true);
-            this.props.onOpenMenu();
+        if (this.Busy === BusyIndicator.none) {
+            let oParams: FiltersRouteParams = {
+            };
+            this._oNavigation.navigate(Routes.Filters, oParams);
         };
     };
     private onSearchBarChange(sNewQuery: string): void {
-        /*this._oCurrState.search = sNewQuery;
-        this._oCurrState.data = this._oData.getData(this._oCurrState.search);
-        this.setState(this._oCurrState);*/
 
         this.Busy = BusyIndicator.charging;
 
@@ -277,13 +152,6 @@ export default class ChantsList extends myReactComponent<ChantListProps> {
                 this.Busy = BusyIndicator.none;
             }
             );
-        /*
-        this._State = {
-            search: sNewQuery,
-            data: this._oData.getData(this._oCurrState.search),
-            busy: this._oCurrState.busy
-        };*/
-        //this.setState({search: text})
     };
 
     public setBusy(bNewBusy: BusyIndicator) {
@@ -309,7 +177,6 @@ export default class ChantsList extends myReactComponent<ChantListProps> {
     private set _State(oState: stateType) {
         this._oCurrState.search = oState.search;
         this._oCurrState.data = oState.data;
-        //if (this._bRendered) {
         this.setState(this._oCurrState);
         //};
     };

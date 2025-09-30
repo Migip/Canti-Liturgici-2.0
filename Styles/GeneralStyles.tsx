@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Settings } from '../globals/classes/settings';
 
 export const GeneralStyles = StyleSheet.create({
     flexVert: {
@@ -25,7 +26,7 @@ export const GeneralStyles = StyleSheet.create({
         marginRight: 7,
     },
     titleText: {
-        fontSize: 30,
+        fontSize: Settings.nGeneralTextSize + 6,
         fontWeight: 'bold'
     },
     buttonBar: {
@@ -47,7 +48,10 @@ export const GeneralStyles = StyleSheet.create({
     },
     progressIndicatorView: {
         alignItems: 'center',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        padding: 5,
+        paddingTop: 20,
+        flex: 1
     },
     boldText: {
         fontWeight: 'bold'

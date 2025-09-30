@@ -7,12 +7,13 @@ export const PopupStyles = StyleSheet.create({
         //alignItems: 'center',
     },
     PopupModal: {
-        flexDirection: 'column',
+        alignSelf: 'center',
         alignContent: 'flex-end',
         alignItems: 'center',
         width: 'auto',
         backgroundColor: '#FFFFFF',
         borderRadius: 20,
+        marginTop: 60,
         margin: 20,
         padding: 35,
         shadowOffset: {
@@ -25,8 +26,8 @@ export const PopupStyles = StyleSheet.create({
     },
     FlashMessages: {
         borderRadius: 20,
-        margin: 20,
-        padding: 35,
+        // marginBottom: 20,
+        // padding: 35,
         shadowOffset: {
             width: 0,
             height: 2,

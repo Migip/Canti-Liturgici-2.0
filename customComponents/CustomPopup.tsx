@@ -63,6 +63,10 @@ export default class CustomPopup extends myReactComponent<CustomPopupProps> {
                                 noBorder />
                         </View>
                         {this.props.popupContent}
+                        <CustomButton
+                            title='OK'
+                            onPress={this._onCloseModal.bind(this)}
+                            />
                         {/*<CustomButton
                             title={this._oI18n.menu.PopupClose}
                             onPress={this._onCloseModal.bind(this)} />*/}
