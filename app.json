@@ -16,7 +16,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "AppCantiLiturgici",
+      "bundleIdentifier": "org.nativescript.CantiLiturgici",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
