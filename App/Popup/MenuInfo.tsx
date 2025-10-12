@@ -2,11 +2,11 @@
 import React from 'react';
 import myReactComponent from '../../customComponents/myReactComponent';
 import { View } from 'react-native';
-import { Icon, Text } from 'react-native-elements';
 import CustomPopup from '../../customComponents/CustomPopup';
 import { MenuStyles } from '../../Styles/MenuStyle';
 import { oConfigClass } from '../../globals/classes/config';
 import { myIcons } from '../../globals/constants/Icons';
+import CustomText from '../../customComponents/myText';
 
 
 declare type InfoProps = {
@@ -45,6 +45,7 @@ export default class Info extends myReactComponent<InfoProps> {
             <CustomPopup
                 buttonTitle={this._oI18n.menu.AppInfoButton}
                 icon={myIcons.appInfo}
+                noBorder={true}
                 popupContent={
                     <View
                         style={[
@@ -54,37 +55,37 @@ export default class Info extends myReactComponent<InfoProps> {
                             style={[
                                 MenuStyles.InfoVersionView
                             ]}>
-                            <Text
+                            <CustomText
                                 style={[
                                     MenuStyles.InfoHead
                                 ]}>
                                 {this._oI18n.menu.AppInfoVerNr}
-                                <Text
+                                <CustomText
                                     style={[
                                         MenuStyles.InfoValue
                                     ]}>
                                     {this._oCurrState.sAppVersion}
-                                </Text>
-                            </Text>
-                            <Text
+                                </CustomText>
+                            </CustomText>
+                            <CustomText
                                 style={[
                                     MenuStyles.InfoHead
                                 ]}>
                                 {this._oI18n.menu.AppInfoChantsNr}
-                                <Text
+                                <CustomText
                                     style={[
                                         MenuStyles.InfoValue
                                     ]}>
                                     {this._oCurrState.sChantVersion}
-                                </Text>
-                            </Text>
+                                </CustomText>
+                            </CustomText>
                         </View>
-                        <Text
+                        <CustomText
                             style={[
                                 MenuStyles.InfoDescription
                             ]}>
                             {this._oI18n.menu.AppInfoDescr}
-                        </Text>
+                        </CustomText>
                     </View>} />
         );
     };

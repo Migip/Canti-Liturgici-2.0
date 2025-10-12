@@ -1,9 +1,10 @@
 import React from 'react';
 import myReactComponent from './myReactComponent';
-import { GestureResponderEvent, TextStyle, ViewStyle } from 'react-native';
+import { ColorValue, GestureResponderEvent, TextStyle, ViewStyle } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { iconType } from '../globals/constants/Icons';
 import { Button } from 'react-native-elements';
+import clTheme from '../globals/classes/colorTheme';
 
 
 declare type CustomButtonProps = {
@@ -11,7 +12,7 @@ declare type CustomButtonProps = {
     onPress?: ((event: GestureResponderEvent) => void) | undefined
     //icon?: IconNode
     icon?: iconType,
-    noBorder?: true
+    noBorder?: boolean
 };
 
 export default class CustomButton extends myReactComponent<CustomButtonProps> {
@@ -22,20 +23,28 @@ export default class CustomButton extends myReactComponent<CustomButtonProps> {
     public render() {
         let icon: iconType | undefined = this.props.icon;
         let oStyle: ViewStyle | TextStyle | undefined;
+        let sBgColor: ColorValue;
         if (this.props.noBorder) {
             oStyle = undefined;
+            sBgColor = 'transparent';
         } else {
             oStyle = {
                 borderWidth: 1
             };
+            sBgColor = clTheme.buttonBg;
         };
         if (icon) {
             return (
                 <FontAwesome6.Button
                     name={icon}
-                    backgroundColor="#ffffffff"
-                    color={'black'}
-                    style={[oStyle]}
+                    backgroundColor={sBgColor}
+                    color={clTheme.TextColor}
+                    style={[
+                        oStyle,
+                        {
+                            borderColor: clTheme.BorderColor
+                        }
+                    ]}
                     onPress={(event: GestureResponderEvent) => {
                         try {
                             this._log("onPress start", this.props.title);
@@ -56,10 +65,10 @@ export default class CustomButton extends myReactComponent<CustomButtonProps> {
                     onPress={this.props.onPress}
 
                     buttonStyle={{
-                        backgroundColor: 'white',
+                        backgroundColor: sBgColor,
                         borderRadius: 3,
                         borderWidth: 1,
-                        borderColor: 'black'
+                        borderColor: clTheme.BorderColor
                     }}
                     containerStyle={{
                         marginHorizontal: 50,
@@ -67,7 +76,7 @@ export default class CustomButton extends myReactComponent<CustomButtonProps> {
                     }}
                     titleStyle={{
                         marginHorizontal: 20,
-                        color: 'black'
+                        color: clTheme.TextColor
                     }} />
             );
         };

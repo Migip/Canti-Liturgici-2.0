@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { Settings } from '../globals/classes/settings';
 
 export const FiltersStyles = StyleSheet.create({
     item: {
@@ -34,5 +35,9 @@ export const FiltersStyles = StyleSheet.create({
     },
     filterSelectionButtons: {
         alignItems: 'center'
+    },
+    filterInfoHeader: {
+        fontSize: Settings.nGeneralTextSize + 6,
+        fontWeight: 'bold',
     }
 });

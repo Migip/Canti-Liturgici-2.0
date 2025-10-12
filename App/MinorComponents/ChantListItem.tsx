@@ -1,5 +1,5 @@
 import React from 'react';
-import { GestureResponderEvent, Pressable, Text, View } from 'react-native';
+import { GestureResponderEvent, Pressable, View } from 'react-native';
 import { ChantsListStyles } from '../../Styles/ChantsListStyles';
 import { oData, oSummaryJsonLine } from '../../globals/classes/data';
 import TextInLine from '../../customComponents/TextInLine';
@@ -7,6 +7,7 @@ import { Routes } from '../../globals/routes/routes';
 import { GeneralStyles } from '../../Styles/GeneralStyles';
 import myReactComponent from '../../customComponents/myReactComponent';
 import { ChantTextRouteParams } from '../ChantText';
+import CustomText from '../../customComponents/myText';
 
 export declare type ChantListItemProps = {
     oItem: oSummaryJsonLine,
@@ -31,13 +32,13 @@ export default class ChantListItem extends myReactComponent<ChantListItemProps> 
                                 display: this.props.oItem.displAuthors === undefined ? 'flex' : 'none'
                             }
                         ]}>
-                        <Text
+                        <CustomText
                             style={[
                                 ChantsListStyles.itemNumber,
                                 ChantsListStyles.itemNumberF
                             ]}>
                             {this.props.oItem.number}
-                        </Text>
+                        </CustomText>
                         <View
                             style={[
                                 ChantsListStyles.itemNotNumber
@@ -59,13 +60,13 @@ export default class ChantListItem extends myReactComponent<ChantListItemProps> 
                                 display: this.props.oItem.displAuthors === undefined ? 'none' : 'flex'
                             }
                         ]}>
-                        <Text
+                        <CustomText
                             style={[
                                 ChantsListStyles.itemNumber,
                                 ChantsListStyles.itemNumberF
                             ]}>
                             {this.props.oItem.number}
-                        </Text>
+                        </CustomText>
                         <View
                             style={[
                                 ChantsListStyles.itemNotNumber,

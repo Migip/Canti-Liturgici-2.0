@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, GestureResponderEvent, Pressable, Text, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { aFilterModel, oData, oFilterModel } from '../globals/classes/data';
 import { GeneralStyles } from '../Styles/GeneralStyles';
 import myReactComponent from '../customComponents/myReactComponent';
@@ -8,15 +8,16 @@ import CustomSearchBar from '../customComponents/CustomSearchBar';
 import { FiltersStyles } from '../Styles/FiltersStyles';
 import FilterSelectionItem from './MinorComponents/FilterSelectionItem';
 import { Icon } from 'react-native-elements';
-import { Alert } from 'react-native';
+//import { Alert } from 'react-native';
 import CustomButton from '../customComponents/CustomButton';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import FlashMessage from 'react-native-flash-message';
 import { myIcons } from '../globals/constants/Icons';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Routes } from '../globals/routes/routes';
 import { FiltersRouteParams } from './Filters';
 import { customMessage } from '../globals/classes/customMessage';
+import CustomText from '../customComponents/myText';
+import CustomSafeArea from '../customComponents/mySafeArea';
+import CustomPopup from '../customComponents/CustomPopup';
 
 export declare type FilterSelectionRouteParams = {
     sTitle: string,
@@ -58,11 +59,27 @@ export default class FilterSelection extends myReactComponent {
         let oOptions: NativeStackNavigationOptions = {
             title: `${this._oParams.sTitle}`,
             headerRight: () => (
-                <CustomButton
-                    onPress={() => Alert.alert(this._oI18n.filter.info, this._oI18n.filter.infoExt.replace("&", this._oParams.sInfoExt))}
+                // <CustomButton
+                //     onPress={() => Alert.alert(this._oI18n.filter.info, this._oI18n.filter.infoExt.replace("&", this._oParams.sInfoExt))}
+                //     icon={myIcons.singleFilterInfo}
+                //     //title={this._oI18n.FilterInfo} />
+                //     title={this._oI18n.filter.info} />
+                <CustomPopup
+                    buttonTitle={this._oI18n.filter.info}
                     icon={myIcons.singleFilterInfo}
-                    //title={this._oI18n.FilterInfo} />
-                    title={this._oI18n.filter.info} />
+                    popupContent={
+                        <View>
+                            <CustomText
+                                style={FiltersStyles.filterInfoHeader}>
+                                {this._oI18n.filter.info}
+                            </CustomText>
+                            <CustomText>
+                                {this._oI18n.filter.infoExt.replace("&", this._oParams.sInfoExt)}
+                            </CustomText>
+                        </View>
+                    }
+                    noBorder={false} />
+
             ),
         };
         this._oNavigation.setOptions(oOptions);
@@ -83,7 +100,7 @@ export default class FilterSelection extends myReactComponent {
     public render() {
 
         return (
-            <SafeAreaView
+            <CustomSafeArea
                 style={[
                     GeneralStyles.pageContainer,
                     GeneralStyles.marginContainer,
@@ -109,12 +126,12 @@ export default class FilterSelection extends myReactComponent {
                         icon={myIcons.applyFilters}
                         title={this._oI18n.filter.apply} />
                 </View>
-                <Text
+                <CustomText
                     style={[
                         GeneralStyles.boldText
                     ]}>
                     {this.state.sSelText}
-                </Text>
+                </CustomText>
                 <FlatList
                     data={this.state.data}
                     style={FiltersStyles.item}
@@ -126,9 +143,9 @@ export default class FilterSelection extends myReactComponent {
                     }
                     ListEmptyComponent={
                         <View>
-                            <Text>
+                            <CustomText>
                                 {this._oI18n.list.emptyList}
-                            </Text>
+                            </CustomText>
                         </View>
                     }
                 />
@@ -136,7 +153,7 @@ export default class FilterSelection extends myReactComponent {
                     isVisible={this._bDialogIsVisible}
                     onBackdropPress={this._closeDialog}/>
                 <StatusBar style='inverted' />*/}
-            </SafeAreaView>)
+            </CustomSafeArea>)
     };
     public onSearchBarChange(sNewQuery: string): void {
         let oSearchRegexp: RegExp;

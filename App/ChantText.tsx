@@ -1,4 +1,4 @@
-import { Text, ScrollView, GestureResponderEvent } from 'react-native';
+import { ScrollView, GestureResponderEvent } from 'react-native';
 import React, { ReactNode } from 'react';
 import myReactComponent from '../customComponents/myReactComponent';
 import { GeneralStyles } from '../Styles/GeneralStyles';
@@ -11,13 +11,14 @@ import CustomButton from '../customComponents/CustomButton';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import { Settings } from '../globals/classes/settings';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { myIcons } from '../globals/constants/Icons';
 import { Gesture, GestureDetector, GestureHandlerRootView, GestureStateChangeEvent, GestureUpdateEvent, PinchGestureChangeEventPayload, PinchGestureHandlerEventPayload } from 'react-native-gesture-handler';
 import { runOnJS } from 'react-native-reanimated';
 import { ChantTextStyles } from '../Styles/ChantTextStyles';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import SettingsMenuButton from './Popup/MenuSetting';
+import CustomText from '../customComponents/myText';
+import CustomSafeArea from '../customComponents/mySafeArea';
 
 
 declare type ChantTextProps = {
@@ -76,7 +77,7 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
             .onEnd(this.onPinchEnd.bind(this))
             .onChange(this.onPinchChange.bind(this));
         return (
-            <SafeAreaView
+            <CustomSafeArea
                 style={[
                     GeneralStyles.pageContainer
                 ]}>
@@ -87,9 +88,9 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
                     <GestureHandlerRootView>
                         <GestureDetector
                             gesture={oPinch}>
-                            <Text style={{ fontSize: this.nFontSizeTmp }}>
+                            <CustomText style={{ fontSize: this.nFontSizeTmp }}>
                                 {this._oCurrState.chantText}
-                            </Text>
+                            </CustomText>
                         </GestureDetector>
                     </GestureHandlerRootView>
                 </ScrollView>
@@ -97,7 +98,7 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
                     title={this._oI18n.detail.share}
                     icon={myIcons.share}
                     onPress={this.onShare.bind(this)} />
-            </SafeAreaView>
+            </CustomSafeArea>
         );
     };
 
@@ -159,7 +160,7 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
             .catch(
                 (oReason: any) => {
                     console.error(oReason);
-                    this._oCurrState.chantText = <Text>{this._oI18n.detail.error}</Text>;
+                    this._oCurrState.chantText = <CustomText>{this._oI18n.detail.error}</CustomText>;
                     this.setState(this._oCurrState);
                 }
             );
@@ -167,7 +168,7 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
 
     private getDefaultState(): stateType {
         return {
-            chantText: <Text>{this._oI18n.detail.loading}</Text>,
+            chantText: <CustomText>{this._oI18n.detail.loading}</CustomText>,
             nFontSize: Settings.nChantTextSize
         };
     };

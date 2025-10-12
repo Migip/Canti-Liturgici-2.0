@@ -2,9 +2,10 @@ import React from 'react';
 import myReactComponent from './myReactComponent';
 import * as Progress from 'react-native-progress';
 //import { View } from 'react-native-reanimated/lib/typescript/Animated';
-import TextInLine from './TextInLine';
-import { Text, View } from 'react-native';
+// import TextInLine from './TextInLine';
+import { View } from 'react-native';
 import { GeneralStyles } from '../Styles/GeneralStyles';
+import CustomText from './myText';
 
 export declare type CustomProgressIndicatorProps = {
     show: boolean,
@@ -34,9 +35,9 @@ export default class CustomProgressIndicator extends myReactComponent<CustomProg
                     <View style={[{
                         display: ( this.props.description === undefined ) ? 'none' : 'flex'
                     }]}>
-                        <Text>
+                        <CustomText>
                             {this.sDescription}
-                        </Text>
+                        </CustomText>
                     </View>
                 </View>
             );

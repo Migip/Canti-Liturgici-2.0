@@ -1,10 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import ChantsList from './App/ChantsList';
-import Navigator from './App/AppNavigator';
+import { useColorScheme } from 'react-native';
 import Homepage from './App/Homepage';
+import clTheme from './globals/classes/colorTheme';
 
 export default function App() {
+  const colorScheme = useColorScheme();
+  clTheme.configInstance(colorScheme);
   return (
     <Homepage />
   );
@@ -18,11 +18,11 @@ export default function App() {
   );
 }*/
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+// });

@@ -1,4 +1,4 @@
-import { FlatList, GestureResponderEvent, PixelRatio, Text, View } from 'react-native';
+import { FlatList, GestureResponderEvent, View } from 'react-native';
 import { ChantsListStyles } from '../Styles/ChantsListStyles';
 import { oData, aSummaryJsonData } from '../globals/classes/data';
 import React from 'react';
@@ -9,10 +9,13 @@ import { GeneralStyles } from '../Styles/GeneralStyles';
 import myReactComponent from '../customComponents/myReactComponent';
 import { FiltersRouteParams } from './Filters';
 import CustomButton from '../customComponents/CustomButton';
+import CustomText from '../customComponents/myText';
 import CustomProgressIndicator from '../customComponents/CustomProgressIndicator';
+// import myText from '../customComponents/myText';
 import { BusyIndicator } from '../globals/constants/tsGeneral';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { myIcons } from '../globals/constants/Icons';
+import clTheme from '../globals/classes/colorTheme';
+import CustomSafeArea from '../customComponents/mySafeArea';
 
 declare type ChantListProps = {
     route: any,
@@ -61,7 +64,7 @@ export default class ChantsList extends myReactComponent<ChantListProps> {
     public render() {
         if (this.Busy === BusyIndicator.none) {
             return (
-                <SafeAreaView style={GeneralStyles.pageContainer}>
+                <CustomSafeArea style={[GeneralStyles.pageContainer]}>
                     <CustomSearchBar
                         placeholder={this._oI18n.list.searchBarPlaceholder}
                         value={this.state.search}
@@ -73,7 +76,10 @@ export default class ChantsList extends myReactComponent<ChantListProps> {
                             (({ highlighted }) => (
                                 <View
                                     style={[
-                                        ChantsListStyles.itemSeparator
+                                        ChantsListStyles.itemSeparator,
+                                        {
+                                            borderColor: clTheme.BorderColor
+                                        }
                                     ]}
                                 />
                             ))
@@ -85,13 +91,13 @@ export default class ChantsList extends myReactComponent<ChantListProps> {
                         }
                         ListEmptyComponent={
                             <View>
-                                <Text>
+                                <CustomText>
                                     {this._oI18n.list.emptyList}
-                                </Text>
+                                </CustomText>
                             </View>
                         }
                     />
-                </SafeAreaView>
+                </CustomSafeArea>
             )
 
         } else {
@@ -111,14 +117,14 @@ export default class ChantsList extends myReactComponent<ChantListProps> {
                     break;
             }
             return (
-                <SafeAreaView style={GeneralStyles.pageContainer}>
+                <CustomSafeArea style={GeneralStyles.pageContainer}>
                     <CustomProgressIndicator
                         show={true}
                         indeterminate={true}
                         description={
                             sDescription
                         } />
-                </SafeAreaView>
+                </CustomSafeArea>
             )
         };
     };

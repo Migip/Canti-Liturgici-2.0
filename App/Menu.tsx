@@ -2,13 +2,11 @@ import { Alert, Modal, View } from 'react-native';
 import React from 'react';
 import myReactComponent from '../customComponents/myReactComponent';
 import { GeneralStyles } from '../Styles/GeneralStyles';
-import { Button, Text } from 'react-native-elements';
-import { Routes } from '../globals/routes/routes';
 import Info from './Popup/MenuInfo';
 import SettingsMenuButton from './Popup/MenuSetting';
 import { MenuStyles } from '../Styles/MenuStyle';
 import MenuBack from './Popup/MenuBack';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import CustomSafeArea from '../customComponents/mySafeArea';
 
 
 declare type MenuProps = {
@@ -33,7 +31,7 @@ export default class Menu extends myReactComponent<MenuProps> {
 
     public render() {
         return (
-            <SafeAreaView
+            <CustomSafeArea
                 style={[
                     GeneralStyles.pageContainer,
                     MenuStyles.MenuSafeView
@@ -47,7 +45,7 @@ export default class Menu extends myReactComponent<MenuProps> {
                 </View>
                 <MenuBack
                     onCloseMenu={this.props.onCloseMenu} />
-            </SafeAreaView>
+            </CustomSafeArea>
         );
     };
 };

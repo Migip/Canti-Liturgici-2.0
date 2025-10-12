@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import clTheme from '../globals/classes/colorTheme';
 
 export const PopupStyles = StyleSheet.create({
     PopupView: {
@@ -11,7 +12,8 @@ export const PopupStyles = StyleSheet.create({
         alignContent: 'flex-end',
         alignItems: 'center',
         width: 'auto',
-        backgroundColor: '#FFFFFF',
+        // backgroundColor: '#FFFFFF',
+        // backgroundColor: clTheme.BGColor,
         borderRadius: 20,
         marginTop: 60,
         margin: 20,

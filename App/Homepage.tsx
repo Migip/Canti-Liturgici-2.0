@@ -1,15 +1,12 @@
-import { View } from 'react-native';
 import React from 'react';
 import myReactComponent from '../customComponents/myReactComponent';
-import { GeneralStyles } from '../Styles/GeneralStyles';
 import { Drawer } from 'react-native-drawer-layout';
-import ChantsList from './ChantsList';
-import { Text } from 'react-native-elements';
 import Menu from './Menu';
 import Navigator from './AppNavigator';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import FlashMessage from 'react-native-flash-message';
 import { StatusBar } from 'expo-status-bar';
+import clTheme from '../globals/classes/colorTheme';
+import CustomSafeArea from '../customComponents/mySafeArea';
 
 
 declare type HomepageProps = {
@@ -33,8 +30,8 @@ export default class Homepage extends myReactComponent<HomepageProps> {
 
     public render() {
         return (
-            <SafeAreaView
-                style={{ flex: 1 }}>
+            <CustomSafeArea
+                style={[{ flex: 1 }]}>
                 <Drawer
                     open={this.bDrawerState}
                     onOpen={(): void => {
@@ -55,7 +52,7 @@ export default class Homepage extends myReactComponent<HomepageProps> {
                         position={'bottom'} />
                 </Drawer>
                 <StatusBar style='auto' />
-            </SafeAreaView>
+            </CustomSafeArea>
         );
     };
 

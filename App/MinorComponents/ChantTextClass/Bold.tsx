@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
-import { Text } from 'react-native-elements';
 import myReactComponent from '../../../customComponents/myReactComponent';
+import CustomText from '../../../customComponents/myText';
 
 export declare type myTextProps = {
     sText: string,
@@ -13,10 +13,10 @@ export default class BoldText extends myReactComponent<myTextProps>  {
      */
     public render() {
         return (
-            <Text style={{ fontWeight: 'bold', fontStyle: 'normal' }}>
+            <CustomText style={{ fontWeight: 'bold', fontStyle: 'normal' }}>
                 {this.props.sText}
                 {this.props.oSon}
-            </Text>
+            </CustomText>
         );
     }
 }

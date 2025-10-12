@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text } from 'react-native-elements';
 import { myTextProps } from './Bold';
 import myReactComponent from '../../../customComponents/myReactComponent';
+import CustomText from '../../../customComponents/myText';
 
 export default class ItalicText extends myReactComponent<myTextProps> {
     /**
@@ -9,10 +9,10 @@ export default class ItalicText extends myReactComponent<myTextProps> {
      */
     public render() {
         return (
-            <Text style={{ fontStyle: 'italic', fontWeight: 'normal' }}>
+            <CustomText style={{ fontStyle: 'italic', fontWeight: 'normal' }}>
                 {this.props.sText}
                 {this.props.oSon}
-            </Text>
+            </CustomText>
         );
     }
 }

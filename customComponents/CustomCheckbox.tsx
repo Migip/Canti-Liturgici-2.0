@@ -2,8 +2,8 @@ import React from 'react';
 import myReactComponent from './myReactComponent';
 import Checkbox from 'expo-checkbox';
 import { Pressable, View } from 'react-native';
-import { Text } from 'react-native-elements';
 import { GeneralStyles } from '../Styles/GeneralStyles';
+import CustomText from './myText';
 
 declare type CustomCheckboxProps = {
     title: string,
@@ -28,9 +28,9 @@ export default class CustomCheckbox extends myReactComponent<CustomCheckboxProps
                     <Checkbox
                         value={this.props.value}
                         onValueChange={this.props.onPress.bind(this)} />
-                    <Text>
+                    <CustomText>
                         {this.props.title}
-                    </Text>
+                    </CustomText>
                 </View>
             </Pressable>
         );

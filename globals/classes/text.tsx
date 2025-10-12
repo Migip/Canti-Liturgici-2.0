@@ -4,8 +4,8 @@ import BoldText from "../../App/MinorComponents/ChantTextClass/Bold";
 import ItalicText from "../../App/MinorComponents/ChantTextClass/Italic";
 import BoldItalicText from "../../App/MinorComponents/ChantTextClass/BoldItalic";
 import NoneText from "../../App/MinorComponents/ChantTextClass/None";
-import { Text } from "react-native-elements";
 import { Settings } from "./settings";
+import CustomText from "../../customComponents/myText";
 
 export class myRichText {
     public static formatMarkdown(sInput: string): string {
@@ -50,7 +50,7 @@ export class myRichText {
     private _getRNOutput(): ReactNode {
         //return this._aRNOutput;
         if (this._oRNOutput === '') {
-            return <Text></Text>
+            return <CustomText></CustomText>
         } else {
             return this._oRNOutput;
         };
@@ -105,7 +105,7 @@ export class myRichText {
                 console.error("Errore formattazione: ", this._sInput);
             }
         });
-        this._oRNOutput = <Text>{this._oRNOutput}{'\n\n\n\n\n\n\n'}</Text>
+        this._oRNOutput = <CustomText>{this._oRNOutput}{'\n\n\n\n\n\n\n'}</CustomText>
     };
 
     private _formatHTML(sTitle: string, sAuthor: string | undefined, sAlbum: string | undefined): void {

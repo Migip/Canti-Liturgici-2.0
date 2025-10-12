@@ -1,5 +1,5 @@
 import React from 'react';
-import { GestureResponderEvent, Pressable, Text, View } from 'react-native';
+import { GestureResponderEvent, Pressable, View } from 'react-native';
 import { aFilterModel, oFilterModel } from '../../globals/classes/data';
 import { GeneralStyles } from '../../Styles/GeneralStyles';
 import myReactComponent from '../../customComponents/myReactComponent';
@@ -10,6 +10,8 @@ import { Icon } from 'react-native-elements';
 import { FiltersStyles } from '../../Styles/FiltersStyles';
 import { myIcons } from '../../globals/constants/Icons';
 import { FontAwesome6 } from '@expo/vector-icons';
+import CustomText from '../../customComponents/myText';
+import clTheme from '../../globals/classes/colorTheme';
 
 
 export declare type oDataProperty = {
@@ -60,14 +62,14 @@ export default class SingleFilterButton extends myReactComponent<SingleFilterBut
                     style={[
                         GeneralStyles.flexHoriz,
                         GeneralStyles.spaceBetween,
-                        {alignItems: 'center'}
+                        { alignItems: 'center' }
                     ]}>
-                    <Text
+                    <CustomText
                         style={[
                             GeneralStyles.boldText
                         ]}>
                         {this.props.sTitle}
-                    </Text>
+                    </CustomText>
                     <View
                         style={[
                             GeneralStyles.flexHoriz,
@@ -75,10 +77,10 @@ export default class SingleFilterButton extends myReactComponent<SingleFilterBut
                             FiltersStyles.filterItemView,
                             GeneralStyles.marginContainer
                         ]}>
-                        <Text>
+                        <CustomText>
                             {/*this._oCurrState.sSelText*/}
                             {this.props.sSelText}
-                        </Text>
+                        </CustomText>
                         {/*<Icon
                             name='chevron-right'
                             type='font-awesome' />*/}
@@ -86,7 +88,9 @@ export default class SingleFilterButton extends myReactComponent<SingleFilterBut
                             icon='chevron-right' />*/}
                         <FontAwesome6
                             name={myIcons.navigation}
-                            size={32} />
+                            size={32}
+                            color={clTheme.TextColor}
+                        />
                     </View>
                 </View>
             </Pressable>)

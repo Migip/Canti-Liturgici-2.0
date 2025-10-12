@@ -9,6 +9,7 @@ import FilterSelection from './FilterSelection';
 import { NavigationContainer } from '@react-navigation/native';
 import CustomButton from '../customComponents/CustomButton';
 import { myIcons } from '../globals/constants/Icons';
+import clTheme from '../globals/classes/colorTheme';
 
 declare type NavigatorProps = {
     onOpenMenu: { (): void }
@@ -25,7 +26,8 @@ export default class Navigator extends myReactComponent<NavigatorProps> {
 
     public render() {
         return (
-            <NavigationContainer>
+            <NavigationContainer
+                theme={clTheme.NavTheme}>
                 <this._stack.Navigator
                     initialRouteName={Routes.Homepage}>
                     <this._stack.Screen
@@ -38,7 +40,7 @@ export default class Navigator extends myReactComponent<NavigatorProps> {
                                     onPress={this.props.onOpenMenu}
                                     icon={myIcons.menu}
                                     title={this._oI18n.list.menuButton}
-                                    noBorder />
+                                    noBorder={true} />
                             ),
                         }} />
                     <this._stack.Screen

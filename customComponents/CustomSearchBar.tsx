@@ -1,6 +1,7 @@
 import React from 'react';
 import myReactComponent from './myReactComponent';
 import { Searchbar } from 'react-native-paper';
+import clTheme from '../globals/classes/colorTheme';
 
 export declare type CustomSearchBarProps = {
     placeholder: string,
@@ -16,6 +17,11 @@ export default class CustomSearchBar extends myReactComponent<CustomSearchBarPro
                 placeholder={this.props.placeholder}
                 onChangeText={this.props.onChangeText}
                 value={this.props.value}
+                style={[clTheme.TxtTheme, clTheme.PlaceholderBgTheme]}
+                inputStyle={clTheme.TxtTheme}
+                placeholderTextColor={clTheme.TextColor}
+                iconColor={clTheme.IconColor}
+                rippleColor={clTheme.TextColor}
             />
         )
     };

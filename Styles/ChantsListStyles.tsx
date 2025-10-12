@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Settings } from '../globals/classes/settings';
+import clTheme from '../globals/classes/colorTheme';
 
 export const ChantsListStyles = StyleSheet.create({
     lineContainer: {

@@ -1,7 +1,6 @@
 import React from 'react';
 import myReactComponent from '../../customComponents/myReactComponent';
 import { GestureResponderEvent, View } from 'react-native';
-import { Text } from 'react-native-elements';
 import CustomPopup from '../../customComponents/CustomPopup';
 import { GeneralStyles } from '../../Styles/GeneralStyles';
 import Slider from '@react-native-community/slider';
@@ -9,6 +8,8 @@ import { Settings, SettingsType } from '../../globals/classes/settings';
 import { MenuStyles } from '../../Styles/MenuStyle';
 import { myIcons } from '../../globals/constants/Icons';
 import CustomCheckbox from '../../customComponents/CustomCheckbox';
+import CustomText from '../../customComponents/myText';
+import clTheme from '../../globals/classes/colorTheme';
 
 
 declare type SettingsProps = {
@@ -44,6 +45,7 @@ export default class SettingsMenuButton extends myReactComponent<SettingsProps> 
             <CustomPopup
                 buttonTitle={this.props.noButton ? '' : this._oI18n.menu.SettingsButton}
                 icon={myIcons.settings}
+                noBorder={true}
                 onOpenModal={this.onOpenModal.bind(this)}
                 onCloseModal={this.onMenuClose.bind(this)}
                 popupContent={
@@ -56,12 +58,6 @@ export default class SettingsMenuButton extends myReactComponent<SettingsProps> 
                                 GeneralStyles.flexHoriz,
                                 GeneralStyles.center
                             ]}>
-                            {/*<CheckBox
-                                checked={this._oCurrState.settings.bHideSecondVoices}
-                                onPress={this.onMinorVoicePress.bind(this)} />
-                            <Text>
-                                {this._oI18n.menu.SettingsHideMinorVoices}
-                            </Text>*/}
                             <CustomCheckbox
                                 value={this._oCurrState.settings.bHideSecondVoices}
                                 onPress={this.onMinorVoicePress.bind(this)}
@@ -72,12 +68,12 @@ export default class SettingsMenuButton extends myReactComponent<SettingsProps> 
                                 GeneralStyles.flexVert,
                                 GeneralStyles.center
                             ]}>
-                            <Text>
+                            <CustomText>
                                 {this._oI18n.menu.SettingsTextSize}
-                                <Text>
+                                <CustomText>
                                     {this._oCurrState.settings.nChantTextSize}
-                                </Text>
-                            </Text>
+                                </CustomText>
+                            </CustomText>
                             <Slider
                                 style={{ width: 200, height: 40 }}
                                 minimumValue={Settings.getInterval().min}
@@ -88,15 +84,15 @@ export default class SettingsMenuButton extends myReactComponent<SettingsProps> 
                                     this._log("onValueChange", value);
                                     this.nChantTextSize = value;
                                 }}
-                                minimumTrackTintColor="#6d6bfbff"
-                                maximumTrackTintColor="#f41c1cff"
+                                minimumTrackTintColor={clTheme.minimumTrackTintColor}
+                                maximumTrackTintColor={clTheme.maximumTrackTintColor}
                             ></Slider>
-                            <Text
+                            <CustomText
                                 style={[
                                     { fontSize: this._oCurrState.settings.nChantTextSize }
                                 ]}>
                                 {this._oI18n.menu.SettingsTextExample}
-                            </Text>
+                            </CustomText>
                         </View>
                     </View>} />
         );

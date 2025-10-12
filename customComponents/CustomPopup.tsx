@@ -2,12 +2,12 @@
 import React, { ReactNode } from 'react';
 import myReactComponent from './myReactComponent';
 import { Alert, Modal, View } from 'react-native';
-import { Button, Icon, Text } from 'react-native-elements';
 import { PopupStyles } from '../Styles/PopupStyle';
 import CustomButton from './CustomButton';
 //import { IconNode } from '@rneui/base';
 //import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { iconType, myIcons } from '../globals/constants/Icons';
+import clTheme from '../globals/classes/colorTheme';
 
 
 declare type CustomPopupProps = {
@@ -15,7 +15,8 @@ declare type CustomPopupProps = {
     icon: iconType
     popupContent: ReactNode,
     onOpenModal?: { (): void },
-    onCloseModal?: { (): void }
+    onCloseModal?: { (): void },
+    noBorder?: boolean
 };
 
 declare type stateType = {
@@ -42,7 +43,7 @@ export default class CustomPopup extends myReactComponent<CustomPopupProps> {
                     title={this.props.buttonTitle}
                     onPress={this._onOpenModal.bind(this)}
                     icon={this.props.icon}
-                    noBorder />
+                    noBorder={this.props.noBorder} />
                 <Modal
                     animationType="fade"
                     presentationStyle='fullScreen'
@@ -50,7 +51,8 @@ export default class CustomPopup extends myReactComponent<CustomPopupProps> {
                     visible={this.bInfoVisible}>
                     <View
                         style={[
-                            PopupStyles.PopupModal
+                            PopupStyles.PopupModal,
+                            clTheme.BgTheme
                         ]}>
                         <View
                             style={{
@@ -66,7 +68,7 @@ export default class CustomPopup extends myReactComponent<CustomPopupProps> {
                         <CustomButton
                             title='OK'
                             onPress={this._onCloseModal.bind(this)}
-                            />
+                        />
                         {/*<CustomButton
                             title={this._oI18n.menu.PopupClose}
                             onPress={this._onCloseModal.bind(this)} />*/}

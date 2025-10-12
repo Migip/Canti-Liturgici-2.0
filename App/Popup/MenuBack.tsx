@@ -1,14 +1,6 @@
 import React from 'react';
 import myReactComponent from '../../customComponents/myReactComponent';
-import { GestureResponderEvent, View } from 'react-native';
-import { Text } from 'react-native-elements';
-import CustomPopup from '../../customComponents/CustomPopup';
-import { CheckBox } from '@rneui/themed';
-import { GeneralStyles } from '../../Styles/GeneralStyles';
-import Slider from '@react-native-community/slider';
-import { Icon } from 'react-native-elements';
 import { Settings as SettingClass, SettingsType } from '../../globals/classes/settings';
-import { MenuStyles } from '../../Styles/MenuStyle';
 import { myIcons } from '../../globals/constants/Icons';
 import CustomButton from '../../customComponents/CustomButton';
 
@@ -30,8 +22,9 @@ export default class MenuBack extends myReactComponent<MenuBackProps> {
         super(props);
         this._oCurrState = {
             settings: {
-                bMinorVoices: SettingClass.bMinorVoices,
-                nChantTextSize: SettingClass.nChantTextSize
+                bHideSecondVoices: SettingClass.bHideSecondVoices,
+                nChantTextSize: SettingClass.nChantTextSize,
+                nGeneralTextSize: SettingClass.nGeneralTextSize
             }
         };
         this.state = this._oCurrState;
@@ -43,7 +36,7 @@ export default class MenuBack extends myReactComponent<MenuBackProps> {
                 icon={myIcons.menuBack}
                 title={this._oI18n.menu.BackButton}
                 onPress={this.props.onCloseMenu}
-                noBorder />
+                noBorder={true} />
         );
     };
 }

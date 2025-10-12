@@ -5,14 +5,10 @@ import SingleFilterButton, { oDataProperty } from './MinorComponents/SingleFilte
 import myReactComponent from '../customComponents/myReactComponent';
 import { aFilterModel, oData } from '../globals/classes/data';
 import CustomButton from '../customComponents/CustomButton';
-import { usePreventRemoveContext } from '@react-navigation/native';
-import { Text } from 'react-native-elements';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { FiltersStyles } from '../Styles/FiltersStyles';
-import { showMessage } from 'react-native-flash-message';
 import { customMessage } from '../globals/classes/customMessage';
-import FlashMessage from 'react-native-flash-message';
 import { myIcons } from '../globals/constants/Icons';
+import CustomSafeArea from '../customComponents/mySafeArea';
 
 export declare type FiltersRouteParams = {
     aNewValue?: aFilterModel
@@ -101,21 +97,13 @@ export default class Filters extends myReactComponent<FiltersProps> {
     public render() {
         this._bRendered = true;
         return (
-            <SafeAreaView
+            <CustomSafeArea
                 style={[
                     GeneralStyles.pageContainer,
                     GeneralStyles.flexVert,
                     FiltersStyles.filtersView,
                     GeneralStyles.marginContainer
                 ]}>
-                {/*<Text
-                    style={[
-                        {
-                            fontStyle: 'italic'
-                        }
-                    ]}>
-                    {this._oI18n.filter.remember_apply}
-                </Text>*/}
                 <View
                     style={[
                         GeneralStyles.flexVert,
@@ -156,7 +144,7 @@ export default class Filters extends myReactComponent<FiltersProps> {
                             icon={myIcons.applyFilters}
                             title={this._oI18n.filter.apply} />*/}
                 </View>
-            </SafeAreaView>
+            </CustomSafeArea>
         );
     };
 
