@@ -208,6 +208,7 @@ export default class Filters extends myReactComponent<FiltersProps> {
         this._updateMyState();
         //this.props.navigation.goBack();
         customMessage.send(this._oI18n.filter.msgClear);
+        this.props.navigation.popToTop();
     };
     private _updateMyState() {
         if (this._bRendered === true) {

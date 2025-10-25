@@ -103,6 +103,7 @@ export class oConfigClass {
         try {
             //Lock del FE
             if (oConfigClass._fSetBusyFunction) {
+                this._log("oConfigClass._fSetBusyFunction(BusyIndicator.downloading);");
                 oConfigClass._fSetBusyFunction(BusyIndicator.downloading);
             };
 
@@ -144,9 +145,9 @@ export class oConfigClass {
                 let oInternetConfig = oConfigClass._fromStringToConfig(await myFile.readTmpFile(ConstFilePath.tmpConfig));
                 this._log(oInternetConfig, oLocalConfig);
                 if (oInternetConfig.appVersion != oLocalConfig.appVersion) {
-                    if (oConfigClass._fSetBusyFunction) {
-                        oConfigClass._fSetBusyFunction(BusyIndicator.downloading);
-                    };
+                    // if (oConfigClass._fSetBusyFunction) {
+                    //     oConfigClass._fSetBusyFunction(BusyIndicator.downloading);
+                    // };
                     await oConfigClass._thereIsNewConfig(oInternetConfig);
                     if (oConfigClass._fSetBusyFunction) {
                         oConfigClass._fSetBusyFunction(BusyIndicator.none);
@@ -180,6 +181,6 @@ export class oConfigClass {
 
 
     private static _log(message?: any, ...optionalParams: any[]) {
-        //console.log("Config", message, optionalParams);
+        console.log("Config", message, optionalParams);
     };
 }

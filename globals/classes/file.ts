@@ -30,16 +30,19 @@ export class myFile {
     };
 
     public static async writeTmpFile(sPath: string, sContent: string, options?: FileSystem.WritingOptions): Promise<void> {
-        this._writeFile(FileSystem.cacheDirectory + sPath, sContent, options);
+        await this._writeFile(FileSystem.cacheDirectory + sPath, sContent, options);
     };
 
     public static async writeDocumentFile(sPath: string, sContent: string, options?: FileSystem.WritingOptions): Promise<void> {
-        this._writeFile(FileSystem.documentDirectory + sPath, sContent, options);
+        await this._writeFile(FileSystem.documentDirectory + sPath, sContent, options);
     };
 
     private static async _writeFile(sPath: string, sContent: string, options?: FileSystem.WritingOptions): Promise<void> {
         this._log("_writeFile", sPath, options);
-        FileSystem.writeAsStringAsync(sPath, sContent, options)
+        if (sPath.endsWith('onfig.json')) {
+            console.log("_writeFile", sPath, sContent);
+        };
+        await FileSystem.writeAsStringAsync(sPath, sContent, options)
             .catch((oReason) => {
                 console.error(oReason);
             });

@@ -16,6 +16,7 @@ import { BusyIndicator } from '../globals/constants/tsGeneral';
 import { myIcons } from '../globals/constants/Icons';
 import clTheme from '../globals/classes/colorTheme';
 import CustomSafeArea from '../customComponents/mySafeArea';
+import { B } from '@expo/html-elements';
 
 declare type ChantListProps = {
     route: any,
@@ -27,6 +28,7 @@ declare type stateType = {
     search: string,
     data: aSummaryJsonData,
     busy: BusyIndicator,
+    sDescription: string,
     nFilters: number
 };
 
@@ -35,20 +37,24 @@ export default class ChantsList extends myReactComponent<ChantListProps> {
         search: '',
         data: [],
         busy: BusyIndicator.charging,
+        sDescription: this._oI18n.list.chargeDescription,
         nFilters: 0
     };
     private _oNavigation;
     public readonly state: stateType;
+    // protected _bActiveLog: boolean = true;
 
     public constructor(props: any) {
         super(props);
         this._oNavigation = props.navigation;
-        this.state = this._State;
+        this.state = this._oCurrState;
 
         this.setFilterButton();
         this.props.navigation.addListener('focus', (event: any) => {
             this.Busy = BusyIndicator.charging;
-            oData.getInstance(this.setBusy.bind(this), this.setStateData.bind(this))
+            // this.setState(this._oCurrState);
+            //oData.getInstance(this.setBusy.bind(this), this.setStateData.bind(this))
+            oData.getInstance(this.setBusy.bind(this))
                 .getData(this._oCurrState.search)
                 .then(
                     (aData: aSummaryJsonData) => {
@@ -57,7 +63,7 @@ export default class ChantsList extends myReactComponent<ChantListProps> {
                         this.setFilterButton();
                     }
                 );
-            this.setState(this._State);
+            // this.setState(this._oCurrState);
         });
     };
 
@@ -101,28 +107,30 @@ export default class ChantsList extends myReactComponent<ChantListProps> {
             )
 
         } else {
-            let sDescription: string;
-            switch (this.Busy) {
-                case BusyIndicator.charging:
-                    sDescription = this._oI18n.list.chargeDescription;
-                    break;
-                case BusyIndicator.downloading:
-                    sDescription = this._oI18n.list.progressDescription;
-                    break;
-                case BusyIndicator.noInit:
-                    sDescription = this._oI18n.list.noInitDescription;
-                    break;
-                default:
-                    sDescription = this._oI18n.list.chargeDescription;
-                    break;
-            }
+            // let sDescription: string;
+            // switch (this.Busy) {
+            //     case BusyIndicator.charging:
+            //         sDescription = this._oI18n.list.chargeDescription;
+            //         break;
+            //     case BusyIndicator.downloading:
+            //         sDescription = this._oI18n.list.progressDescription;
+            //         break;
+            //     case BusyIndicator.noInit:
+            //         sDescription = this._oI18n.list.noInitDescription;
+            //         break;
+            //     default:
+            //         sDescription = this._oI18n.list.chargeDescription;
+            //         break;
+            // }
+            // this._log(this.Busy, sDescription);
+            this._log(this.Busy, this._oCurrState.busy);
             return (
                 <CustomSafeArea style={GeneralStyles.pageContainer}>
                     <CustomProgressIndicator
                         show={true}
                         indeterminate={true}
                         description={
-                            sDescription
+                            this.state.sDescription
                         } />
                 </CustomSafeArea>
             )
@@ -137,20 +145,26 @@ export default class ChantsList extends myReactComponent<ChantListProps> {
     };
     private onSearchBarChange(sNewQuery: string): void {
 
-        this.Busy = BusyIndicator.charging;
+        //this.Busy = BusyIndicator.charging;
 
-        oData.getInstance(this.setBusy.bind(this), this.setStateData.bind(this)).getData(sNewQuery)
+        // oData.getInstance(this.setBusy.bind(this), this.setStateData.bind(this)).getData(sNewQuery)
+        oData.getInstance(this.setBusy.bind(this)).getData(sNewQuery)
             .then(
                 (aData: aSummaryJsonData) => {
 
-                    this._State = {
-                        search: sNewQuery,
-                        data: aData,
-                        busy: this._oCurrState.busy,
-                        nFilters: this._oCurrState.nFilters
-                    };
-                    this.setState(this._State);
-                    this.Busy = BusyIndicator.none;
+                    // this._State = {
+                    //     search: sNewQuery,
+                    //     data: aData,
+                    //     //busy: this._oCurrState.busy,
+                    //     busy: BusyIndicator.none,
+                    //     sDescription: this._oCurrState.sDescription,
+                    //     nFilters: this._oCurrState.nFilters
+                    // };
+                    this._oCurrState.search = sNewQuery;
+                    this._oCurrState.data = aData;
+                    this._oCurrState.busy = BusyIndicator.none;
+                    //this.setState(this._State, this._removeBusy.bind(this));
+                    this.setState(this._oCurrState, this._removeBusy.bind(this));
                 }
             )
             .catch((reason) => {
@@ -169,25 +183,35 @@ export default class ChantsList extends myReactComponent<ChantListProps> {
 
     public set Busy(bNewBusy: BusyIndicator) {
         this._oCurrState.busy = bNewBusy;
-        this._State = this._oCurrState;
-        this.setState(this._State);
+        switch (bNewBusy) {
+            case BusyIndicator.charging:
+                this._oCurrState.sDescription = this._oI18n.list.chargeDescription;
+                break;
+            case BusyIndicator.downloading:
+                this._oCurrState.sDescription = this._oI18n.list.progressDescription;
+                break;
+            case BusyIndicator.noInit:
+                this._oCurrState.sDescription = this._oI18n.list.noInitDescription;
+                break;
+            default:
+                this._oCurrState.sDescription = this._oI18n.list.chargeDescription;
+                break;
+        };
+        //this._State = this._oCurrState;
+        // this.setState(this._State);
+        this.setState(this._oCurrState);
     };
     public get Busy(): BusyIndicator {
         return this._oCurrState.busy;
     };
     public set StateData(aData: aSummaryJsonData) {
         this._oCurrState.data = aData;
-        this._oCurrState.busy = BusyIndicator.none;
-        this.setState(this._oCurrState);
+        this.setState(this._oCurrState, this._removeBusy.bind(this));
     };
-    private set _State(oState: stateType) {
-        this._oCurrState.search = oState.search;
-        this._oCurrState.data = oState.data;
-        this.setState(this._oCurrState);
-        //};
-    };
-    private get _State(): stateType {
-        return this._oCurrState;
+
+    private _removeBusy() {
+        this._log("_removeBusy");
+        this.Busy = BusyIndicator.none;
     };
 
     private setFilterButton(bEmpty?: boolean) {

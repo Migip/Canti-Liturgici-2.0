@@ -48,7 +48,7 @@ export class oData {
     private _aAlbumsFilter: aFilterModel;
     private _aCategoriesFilter: aFilterModel;
     //private _oConfig: oConfigClass;
-    private static _fSetStateFunction?: fSetState;
+    //private static _fSetStateFunction?: fSetState;
     private static _fSetBusyFunction?: fSetBusy;
     //private readonly _oOnlyNumbersRegexp: RegExp = new RegExp('^[0-9]+$');
 
@@ -56,9 +56,11 @@ export class oData {
 
     public static getInstance(
         fSetBusyFunction?: fSetBusy,
-        fSetStateFunction?: fSetState): oData {
-        if (fSetStateFunction) {
-            this._fSetStateFunction = fSetStateFunction;
+        //    fSetStateFunction?: fSetState
+    ): oData {
+        //if (fSetStateFunction) {
+        if (fSetBusyFunction) {
+            //this._fSetStateFunction = fSetStateFunction;
             this._fSetBusyFunction = fSetBusyFunction;
         };
         if (!this._oInstance) {
@@ -76,7 +78,7 @@ export class oData {
         //this._oConfig = oConfigClass.getInstance();
         //this._aData = this._getData();
         this._aData = undefined;
-        
+
         this._aAuthorsFilter = [];
         this._aAlbumsFilter = [];
         this._aCategoriesFilter = [];
@@ -292,7 +294,7 @@ export class oData {
         //aFileData = this._oConfig.getJsonData();
         let oConfig: oConfigClass = await oConfigClass.getInstance(oData._fSetBusyFunction);
         aFileData = await oConfig.getJsonData();
-        
+
         aFileData.forEach((oData) => {
             let oChant: oSummaryJsonLine;
             oData.t01.forEach(

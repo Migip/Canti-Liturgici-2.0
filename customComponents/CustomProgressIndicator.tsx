@@ -14,12 +14,20 @@ export declare type CustomProgressIndicatorProps = {
     description?: string
 };
 
-export default class CustomProgressIndicator extends myReactComponent<CustomProgressIndicatorProps> {
-    private sDescription: string;
+declare type stateType = {
+    sDescription: string,
+};
 
-    constructor(props: any){
+export default class CustomProgressIndicator extends myReactComponent<CustomProgressIndicatorProps> {
+    //private sDescription: string;
+    public readonly state: stateType;
+
+    constructor(props: any) {
         super(props);
-        this.sDescription = this.props.description || '';
+        //this.sDescription = this.props.description || '';
+        this.state = {
+            sDescription: this.props.description || ''
+        };
     };
     public render() {
         if (this.props.show) {
@@ -33,10 +41,13 @@ export default class CustomProgressIndicator extends myReactComponent<CustomProg
                         progress={this.props.progress}
                     />
                     <View style={[{
-                        display: ( this.props.description === undefined ) ? 'none' : 'flex'
+                        display: (this.props.description === undefined) ? 'none' : 'flex'
                     }]}>
-                        <CustomText>
-                            {this.sDescription}
+                        <CustomText
+                            style={[{
+                                textAlign: 'center'
+                            }]}>
+                            {this.props.description/* {this.sDescription} */}
                         </CustomText>
                     </View>
                 </View>
