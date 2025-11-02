@@ -123,10 +123,33 @@ export class cFilter {
             oSearchRegexp = new RegExp(
                 '.*'
                 +
-                this._sQuery.toUpperCase().split(" ").join(".*")
+                this._sQuery.toUpperCase()
+                    .split(" ")
+                    .map(word => {
+                        console.log(word);
+                        return word
+                            .split('')
+                            .map(char => {
+                                // Gestisce e/è/é
+                                if (/[EÈÉ]/i.test(char)) return '[EÈÉ]';
+                                // Gestisce a/à
+                                if (/[AÀ]/i.test(char)) return '[AÀ]';
+                                // Gestisce altri caratteri accentati comuni
+                                if (/[OÒÓ]/i.test(char)) return '[OÒÓ]';
+                                if (/[IÌÍ]/i.test(char)) return '[IÌÍ]';
+                                if (/[UÙÚ]/i.test(char)) return '[UÙÚ]';
+                                // Gestisce apostrofi
+                                if (/[''`´’]/i.test(char)) return "[''`´’]";
+                                // Escape caratteri speciali regex
+                                return char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                            })
+                            .join('');
+                    })
+                    .join(".*")
                 +
                 '.*'
             );
+            console.log(oSearchRegexp);
             return this._aAllData.filter((item: oSummaryJsonLine) => {
                 return oSearchRegexp.test(item.titleU) && this._filterDataByFilters(item);
             });
