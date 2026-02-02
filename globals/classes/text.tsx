@@ -59,6 +59,7 @@ export class myRichText {
     private _formatMarkdown(): void {
         let aParts: string[] = this._sInput.split('§');
         aParts.forEach((sPart: string) => {
+            sPart = sPart.trimStart();
             if (sPart.length >= 4) {
                 let sKey: string = sPart.substring(0, 4).toLowerCase();
                 let sText: string = sPart.substring(4);
@@ -86,6 +87,7 @@ export class myRichText {
         let aExcludeKey: string[] = this._idToExclude();
         aParts.reverse().forEach((sPart: string) => {
             iKey += 1;
+            sPart = sPart.trimStart();
             if (sPart.length >= 4) {
                 let sKey: string = sPart.substring(0, 4).toLowerCase();
                 if (aExcludeKey.find((sValue: string) => { return sValue === sKey }) === undefined) {
@@ -155,6 +157,7 @@ export class myRichText {
         let aExcludeKey: string[] = this._idToExclude();
         aParts.forEach((sPart: string) => {
             if (sPart.length >= 4) {
+                sPart = sPart.trimStart();
                 let sKey: string = sPart.substring(0, 4).toLowerCase();
                 if (aExcludeKey.find((sValue: string) => { return sValue === sKey }) === undefined) {
                     let sText: string = sPart.substring(4);
