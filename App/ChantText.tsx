@@ -74,6 +74,7 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
 
     public render() {
         const oPinch = Gesture.Pinch()
+            .runOnJS(true)
             .onEnd(this.onPinchEnd.bind(this))
             .onChange(this.onPinchChange.bind(this));
         return (
@@ -125,7 +126,8 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
 
     public onPinchEnd(oEvent: GestureStateChangeEvent<PinchGestureHandlerEventPayload>, bSuccess: boolean) {
         //'worklet';
-        runOnJS(this.onPinchEndJs.bind(this))(oEvent, bSuccess);
+        //runOnJS(this.onPinchEndJs.bind(this))(oEvent, bSuccess);
+        this.onPinchEndJs(oEvent, bSuccess);
     };
 
     public onPinchEndJs(oEvent: GestureStateChangeEvent<PinchGestureHandlerEventPayload>, bSuccess: boolean) {
@@ -134,7 +136,8 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
 
     public onPinchChange(oEvent: GestureUpdateEvent<PinchGestureHandlerEventPayload & PinchGestureChangeEventPayload>) {
         //'worklet';
-        runOnJS(this.onPinchChangeJs.bind(this))(oEvent);
+        //runOnJS(this.onPinchChangeJs.bind(this))(oEvent);
+        this.onPinchChangeJs(oEvent);
     };
 
     public onPinchChangeJs(oEvent: GestureUpdateEvent<PinchGestureHandlerEventPayload & PinchGestureChangeEventPayload>) {
