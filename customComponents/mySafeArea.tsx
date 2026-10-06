@@ -10,7 +10,7 @@ export default class CustomSafeArea extends myReactComponent<SafeAreaViewProps> 
         const { children, style, ...rest } = this.props;
         const styles = [style, clTheme.TxtTheme, clTheme.BgTheme].filter(Boolean);
         return (
-            <SafeAreaView edges={['bottom', 'left', 'right']} style={styles as any} {...rest}>
+            <SafeAreaView style={styles as any} {...rest}>
                 {children}
             </SafeAreaView>)
     }

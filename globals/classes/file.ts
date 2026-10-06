@@ -1,91 +1,66 @@
-import { File, Directory, Paths } from 'expo-file-system';
+
+import * as FileSystem from 'expo-file-system';
 import { unzipSync } from "fflate";
 import { Buffer } from "buffer";
-
-type TEncodingOptions = { encoding?: 'utf8' | 'base64' };
 
 export class myFile {
 
     private static bLog: boolean = true;
 
 
-    // ---------------------------------------------------------------
-    // DOWNLOAD
-    // ---------------------------------------------------------------
-
     public static async downloadFileToTmp(sUrl: string, sDestPath: string) {
-        await this._downloadFile(sUrl, new File(Paths.cache, sDestPath));
+        await this._downloadFile(sUrl, FileSystem.cacheDirectory + sDestPath);
     };
 
     public static async downloadFileToDocument(sUrl: string, sDestPath: string) {
-        await this._downloadFile(sUrl, new File(Paths.document, sDestPath));
+        await this._downloadFile(sUrl, FileSystem.documentDirectory + sDestPath);
     };
 
-    private static async _downloadFile(sUrl: string, oDest: File) {
-        this._log("_downloadFile", sUrl, oDest.uri);
+    private static async _downloadFile(sUrl: string, sDestPath: string) {
+        this._log("_downloadFile", sUrl, sDestPath);
         try {
-            // Assicura che la cartella di destinazione esista
-            oDest.parentDirectory.create({ idempotent: true, intermediates: true });
-            // Se il file esiste già lo rimuoviamo prima di scaricare: la nuova
-            // downloadFileAsync (a differenza della vecchia downloadAsync) rifiuta
-            // la chiamata con "Destination already exists" se non lo si fa.
-            if (oDest.exists) {
-                oDest.delete();
-            }
-            await File.downloadFileAsync(sUrl, oDest, { idempotent: true });
-            this._log("_downloadFile completato", sUrl, oDest.uri);
+            await FileSystem.downloadAsync(
+                sUrl,
+                sDestPath
+            );
+            this._log("_downloadFile completato", sUrl, sDestPath);
         } catch (error) {
             console.error(error);
         }
     };
 
-
-    // ---------------------------------------------------------------
-    // WRITE
-    // ---------------------------------------------------------------
-
-    public static async writeTmpFile(sPath: string, sContent: string, options?: TEncodingOptions): Promise<void> {
-        await this._writeFile(new File(Paths.cache, sPath), sContent, options);
+    public static async writeTmpFile(sPath: string, sContent: string, options?: FileSystem.WritingOptions): Promise<void> {
+        await this._writeFile(FileSystem.cacheDirectory + sPath, sContent, options);
     };
 
-    public static async writeDocumentFile(sPath: string, sContent: string, options?: TEncodingOptions): Promise<void> {
-        await this._writeFile(new File(Paths.document, sPath), sContent, options);
+    public static async writeDocumentFile(sPath: string, sContent: string, options?: FileSystem.WritingOptions): Promise<void> {
+        await this._writeFile(FileSystem.documentDirectory + sPath, sContent, options);
     };
 
-    private static async _writeFile(oFile: File, sContent: string, options?: TEncodingOptions): Promise<void> {
-        this._log("_writeFile", oFile.uri, options);
-        if (oFile.uri.endsWith('onfig.json')) {
-            console.log("_writeFile", oFile.uri, sContent);
+    private static async _writeFile(sPath: string, sContent: string, options?: FileSystem.WritingOptions): Promise<void> {
+        this._log("_writeFile", sPath, options);
+        if (sPath.endsWith('onfig.json')) {
+            console.log("_writeFile", sPath, sContent);
         };
+        await FileSystem.writeAsStringAsync(sPath, sContent, options)
+            .catch((oReason) => {
+                console.error(oReason);
+            });
+    };
+
+
+    public static async readTmpFile(sPath: string, options?: FileSystem.ReadingOptions | undefined): Promise<string> {
+        return await this._readFile(FileSystem.cacheDirectory + sPath, options);
+    };
+
+    public static async readDocumentFile(sPath: string, options?: FileSystem.ReadingOptions | undefined): Promise<string> {
+        return await this._readFile(FileSystem.documentDirectory + sPath, options);
+    };
+
+    private static async _readFile(sPath: string, options?: FileSystem.ReadingOptions | undefined): Promise<string> {
+        this._log("_readFile", sPath, options);
         try {
-            oFile.parentDirectory.create({ idempotent: true, intermediates: true });
-            oFile.create({ overwrite: true, intermediates: true });
-            oFile.write(sContent, options);
-        } catch (oReason) {
-            console.error(oReason);
-        }
-    };
-
-
-    // ---------------------------------------------------------------
-    // READ
-    // ---------------------------------------------------------------
-
-    public static async readTmpFile(sPath: string, options?: TEncodingOptions): Promise<string> {
-        return await this._readFile(new File(Paths.cache, sPath), options);
-    };
-
-    public static async readDocumentFile(sPath: string, options?: TEncodingOptions): Promise<string> {
-        return await this._readFile(new File(Paths.document, sPath), options);
-    };
-
-    private static async _readFile(oFile: File, options?: TEncodingOptions): Promise<string> {
-        this._log("_readFile", oFile.uri, options);
-        try {
-            if (options?.encoding === 'base64') {
-                return await oFile.base64();
-            }
-            return await oFile.text();
+            return await FileSystem.readAsStringAsync(sPath, options);
         } catch (oError) {
             console.error(oError);
             return '';
@@ -93,84 +68,54 @@ export class myFile {
     };
 
 
-    // ---------------------------------------------------------------
-    // DELETE
-    // ---------------------------------------------------------------
-
-    public static async removeTmpFileOrDir(sPath: string): Promise<void> {
-        await this._removeFileOrDir(Paths.join(Paths.cache, sPath));
+    public static async removeTmpFileOrDir(sPath: string, options?: FileSystem.DeletingOptions): Promise<void> {
+        await this._removeFileOrDir(FileSystem.cacheDirectory + sPath, options);
     };
 
-    public static async removeDocumentFileOrDir(sPath: string): Promise<void> {
-        await this._removeFileOrDir(Paths.join(Paths.document, sPath));
+    public static async removeDocumentFileOrDir(sPath: string, options?: FileSystem.DeletingOptions): Promise<void> {
+        await this._removeFileOrDir(FileSystem.documentDirectory + sPath, options);
     };
 
-    private static async _removeFileOrDir(sUri: string): Promise<void> {
-        this._log("_removeFileOrDir", sUri);
+    private static async _removeFileOrDir(sPath: string, options?: FileSystem.DeletingOptions): Promise<void> {
+        this._log("_removeFileOrDir", sPath, options);
         try {
-            const pathInfo = Paths.info(sUri);
-            if (!pathInfo.exists) {
-                // idempotente: se non esiste non c'è nulla da eliminare
-                return;
-            }
-            if (pathInfo.isDirectory) {
-                new Directory(sUri).delete();
-            } else {
-                new File(sUri).delete();
-            }
+            await FileSystem.deleteAsync(sPath, options);
         } catch (error) {
             console.error(error);
         }
     };
 
 
-    // ---------------------------------------------------------------
-    // CREATE DIR
-    // ---------------------------------------------------------------
-
-    public static async createTmpDir(sPath: string, options?: { intermediates?: boolean }): Promise<void> {
-        await this._createDir(new Directory(Paths.cache, sPath), options);
+    public static async createTmpDir(sPath: string, options?: FileSystem.MakeDirectoryOptions | undefined): Promise<void> {
+        await this._createDir(FileSystem.cacheDirectory + sPath, options);
     };
 
-    public static async createDocumentDir(sPath: string, options?: { intermediates?: boolean }): Promise<void> {
-        await this._createDir(new Directory(Paths.document, sPath), options);
+    public static async createDocumentDir(sPath: string, options?: FileSystem.MakeDirectoryOptions | undefined): Promise<void> {
+        await this._createDir(FileSystem.documentDirectory + sPath, options);
     };
 
-    private static async _createDir(oDir: Directory, options?: { intermediates?: boolean }): Promise<void> {
-        this._log("_createDir", oDir.uri, options);
+    private static async _createDir(sPath: string, options?: FileSystem.MakeDirectoryOptions | undefined): Promise<void> {
+        this._log("_createDir", sPath, options);
         try {
-            oDir.create({ idempotent: true, intermediates: options?.intermediates ?? true });
+            await FileSystem.makeDirectoryAsync(sPath, options);
         } catch (error) {
             console.error(error);
         }
     };
 
 
-    // ---------------------------------------------------------------
-    // INFO
-    // ---------------------------------------------------------------
-
-    public static async getTmpDirOrFileInfo(sPath: string) {
-        return await this._getDirOrFileInfo(Paths.join(Paths.cache, sPath));
+    public static async getTmpDirOrFileInfo(sPath: string): Promise<FileSystem.FileInfo> {
+        return await this._getDirOrFileInfo(FileSystem.cacheDirectory + sPath);
     };
 
-    public static async getDocumentDirOrFileInfo(sPath: string) {
-        return await this._getDirOrFileInfo(Paths.join(Paths.document, sPath));
+    public static async getDocumentDirOrFileInfo(sPath: string): Promise<FileSystem.FileInfo> {
+        return await this._getDirOrFileInfo(FileSystem.documentDirectory + sPath);
     };
 
-    private static async _getDirOrFileInfo(sUri: string) {
-        this._log("_getDirOrFileInfo", sUri);
+    private static async _getDirOrFileInfo(sPath: string): Promise<FileSystem.FileInfo> {
+        this._log("_getDirOrFileInfo", sPath);
         try {
-            const pathInfo = Paths.info(sUri);
-            if (!pathInfo.exists) {
-                return { exists: false as const, isDirectory: null, uri: sUri };
-            }
-            if (pathInfo.isDirectory) {
-                const oDir = new Directory(sUri);
-                return { ...oDir.info(), exists: true as const, isDirectory: true as const };
-            }
-            const oFile = new File(sUri);
-            return { ...oFile.info(), exists: true as const, isDirectory: false as const };
+            return await FileSystem.getInfoAsync(sPath);
         } catch (error) {
             console.error(error);
             throw error;
@@ -178,50 +123,47 @@ export class myFile {
     };
 
 
-    // ---------------------------------------------------------------
-    // UNZIP
-    // ---------------------------------------------------------------
-
     public static async unzipTmpToDocument(sZipPath: string, sContentDest: string) {
-        await this._unzip(new File(Paths.cache, sZipPath), new Directory(Paths.document, sContentDest));
+        await this._unzip(FileSystem.cacheDirectory + sZipPath, FileSystem.documentDirectory + sContentDest);
     };
 
-    private static async _unzip(oZipFile: File, oContentDest: Directory) {
-        this._log("_unzip 0", oZipFile.uri);
-        let sZipContent = await this._readFile(oZipFile, { encoding: 'base64' });
+    private static async _unzip(sZipPath: string, sContentDest: string) {
+        this._log("_unzip 0", sZipPath);
+        let sZipContent = await this._readFile(sZipPath, { encoding: FileSystem.EncodingType.Base64 });
 
         try {
             this._log("_unzip 1", "Sto unzippando");
-            const zipArray = new Uint8Array(Buffer.from(sZipContent, 'base64'));
+            const zipArray = new Uint8Array(Buffer.from(sZipContent, FileSystem.EncodingType.Base64));
             // Unzip the file using fflate
             const unzippedFiles = unzipSync(zipArray); // unzippedFiles is an object with file names as keys and Uint8Array as values
             this._log("_unzip 2", "Files unzipped:", Object.keys(unzippedFiles));
             //console.log("Files unzipped:", Object.keys(unzippedFiles));
 
-            // Ensure the unzipped folder exists (pulita se già presente)
-            if (!oContentDest.exists) {
-                oContentDest.create({ idempotent: true, intermediates: true });
+            // Ensure the unzipped folder exists
+            const folderInfo = await this._getDirOrFileInfo(sContentDest);
+            if (!folderInfo.exists) {
+                await this._createDir(sContentDest, { intermediates: true });
             } else {
-                oContentDest.delete();
-                oContentDest.create({ idempotent: true, intermediates: true });
+                await this._removeFileOrDir(sContentDest, { idempotent: true });
+                await this._createDir(sContentDest, { intermediates: true });
             }
 
             // Save each unzipped file to the unzipped folder
             for (const [fileName, fileData] of Object.entries(unzippedFiles)) {
+                const filePath = sContentDest + fileName;
+
+                const base64Content = Buffer.from(fileData).toString(FileSystem.EncodingType.Base64);
+                //console.log(`Saving ${fileName} to ${filePath} content ${base64Content.substring(0, 20)}`);
+                //this._log("_unzip 3", `Saving ${fileName} to ${filePath}`);
                 if (fileName.substring(fileName.length - 1) !== '/') {
-                    // File: convertiamo in base64 e scriviamo
-                    const base64Content = Buffer.from(fileData).toString('base64');
-                    const oFile = new File(oContentDest, fileName);
-                    //this._log("_unzip 3", `Saving ${fileName} to ${oFile.uri}`);
-                    oFile.parentDirectory.create({ idempotent: true, intermediates: true });
-                    oFile.create({ overwrite: true, intermediates: true });
-                    oFile.write(base64Content, { encoding: 'base64' });
-                    //this._log("_unzip 4", `Saved ${fileName} to ${oFile.uri}`);
+                    // Convert the file content (Uint8Array) to string (for text files) or directly save binary data (for images, etc.)
+                    await this._writeFile(filePath, base64Content, { encoding: FileSystem.EncodingType.Base64 });
+                    //this._log("_unzip 4", `Saved ${fileName} to ${filePath}`);
+                    // console.log(`Saved ${fileName} to ${filePath} content ${base64Content.substring(0, 20)}`);
                 } else {
-                    // Directory
-                    const oDir = new Directory(oContentDest, fileName);
-                    oDir.create({ idempotent: true, intermediates: true });
-                    //this._log("_unzip 5", `Saved directory ${fileName} to ${oDir.uri}`);
+                    await this._createDir(filePath, { intermediates: true });
+                    //this._log("_unzip 5", `Saved directory ${fileName} to ${filePath}`);
+                    // console.log(`Saved directory ${fileName} to ${filePath}`);
                 };
             }
         } catch (oError) {
