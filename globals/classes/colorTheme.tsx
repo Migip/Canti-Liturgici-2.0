@@ -22,6 +22,9 @@ export default class clTheme {
     public static get TextColor(): ColorValue {
         return this._oInstance._TextColor;
     };
+    public static get TextColorString(): string {
+        return this._oInstance._TextColorString;
+    };
     public static get BorderColor(): ColorValue {
         return this._oInstance._TextColor;
     };
@@ -72,6 +75,13 @@ export default class clTheme {
     };
 
     private get _TextColor(): ColorValue {
+        if (this._sColorScheme === 'light') {
+            return styles.lightThemeText.color;
+        } else {
+            return styles.darkThemeText.color;
+        }
+    };
+    private get _TextColorString(): string {
         if (this._sColorScheme === 'light') {
             return styles.lightThemeText.color;
         } else {

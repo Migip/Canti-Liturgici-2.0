@@ -10,6 +10,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import CustomButton from '../customComponents/CustomButton';
 import { myIcons } from '../globals/constants/Icons';
 import clTheme from '../globals/classes/colorTheme';
+import { AppHeader } from '../customComponents/AppHeader';
 
 declare type NavigatorProps = {
     onOpenMenu: { (): void }
@@ -29,7 +30,8 @@ export default class Navigator extends myReactComponent<NavigatorProps> {
             <NavigationContainer
                 theme={clTheme.NavTheme}>
                 <this._stack.Navigator
-                    initialRouteName={Routes.Homepage}>
+                    initialRouteName={Routes.Homepage}
+                    screenOptions={{ header: (props) => <AppHeader {...props} /> }}>
                     <this._stack.Screen
                         name={Routes.Homepage}
                         component={ChantsList}
