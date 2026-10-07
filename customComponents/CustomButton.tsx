@@ -1,6 +1,8 @@
 import React from 'react';
 import myReactComponent from './myReactComponent';
 import { ColorValue, GestureResponderEvent, TextStyle, ViewStyle } from 'react-native';
+//import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import { Pressable, Text } from 'react-native';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { iconType } from '../globals/constants/Icons';
 import { Button } from 'react-native-elements';
@@ -35,29 +37,36 @@ export default class CustomButton extends myReactComponent<CustomButtonProps> {
         };
         if (icon) {
             return (
-                <FontAwesome6.Button
-                    name={icon}
-                    backgroundColor={sBgColor}
-                    color={clTheme.TextColor}
-                    style={[
-                        oStyle,
-                        {
-                            borderColor: clTheme.BorderColor
-                        }
-                    ]}
+                <Pressable
                     onPress={(event: GestureResponderEvent) => {
                         try {
                             this._log("onPress start", this.props.title);
-                            if (this.props.onPress) {
-                                this.props.onPress(event);
-                            };
+                            this.props.onPress?.(event);
                             this._log("onPress end", this.props.title);
                         } catch (error) {
                             console.error("onPress", error);
                         }
-                    }}>
-                    {this.props.title}
-                </FontAwesome6.Button>);
+                    }}
+                    style={({ pressed }) => [
+                        {
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            paddingVertical: 8,
+                            paddingHorizontal: 12,
+                            borderRadius: 8,
+                            backgroundColor: sBgColor,
+                            borderWidth: this.props.noBorder ? 0 : 1,
+                            borderColor: clTheme.BorderColor,
+                            opacity: pressed ? 0.7 : 1,
+                        },
+                    ]}>
+                    <FontAwesome6 name={icon} size={18} color={clTheme.TextColor} />
+                    <Text style={{ color: clTheme.TextColor, marginLeft: 8 }}>
+                        {this.props.title}
+                    </Text>
+                </Pressable>
+            );
         } else {
             return (
                 <Button

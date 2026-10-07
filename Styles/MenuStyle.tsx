@@ -3,13 +3,14 @@ import { StyleSheet } from 'react-native';
 export const MenuStyles = StyleSheet.create({
     MenuView: {
         justifyContent: 'flex-start',
-        alignItems: 'stretch',
+        alignItems: 'flex-start',
         //alignSelf: 'auto',
         rowGap: 10
     },
     MenuSafeView: {
-         justifyContent: 'space-evenly',
-         //justifyContent: 'space-between',
+        justifyContent: 'space-evenly',
+        alignItems: 'flex-start',
+        //justifyContent: 'space-between',
         // paddingBottom: 70,
         // margin: 20
     },

@@ -1,7 +1,7 @@
 import { i18n } from "./i18n.general";
 
 export default class i18n_it implements i18n {
-    appTitle = 'Elenco dei canti';
+    appTitle = 'Canti';
     //Homepage - Chant list
     list = {
         filtersButton: 'Filtri',

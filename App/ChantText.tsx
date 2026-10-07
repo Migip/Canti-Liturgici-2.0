@@ -8,12 +8,13 @@ import { myRichText } from '../globals/classes/text';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { oSummaryJsonLine } from '../globals/classes/data';
 import CustomButton from '../customComponents/CustomButton';
+import { Buffer } from 'buffer';
+import { File, Paths } from 'expo-file-system';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import { Settings } from '../globals/classes/settings';
 import { myIcons } from '../globals/constants/Icons';
 import { Gesture, GestureDetector, GestureHandlerRootView, GestureStateChangeEvent, GestureUpdateEvent, PinchGestureChangeEventPayload, PinchGestureHandlerEventPayload } from 'react-native-gesture-handler';
-import { runOnJS } from 'react-native-reanimated';
 import { ChantTextStyles } from '../Styles/ChantTextStyles';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import SettingsMenuButton from './Popup/MenuSetting';
@@ -41,6 +42,16 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
     private _sOriginalText: string = '';
     protected _sCompName: string = "ChantText";
     public state: stateType;
+
+    // Gesture creata una sola volta (non a ogni render).
+    // I callback sono metodi di classe, non worklet: li eseguo esplicitamente sul thread JS.
+    // NB: vanno passati come riferimenti già bindati, NON come arrow function inline:
+    // il plugin Babel di reanimated workletizza le funzioni inline nella catena Gesture
+    // e in quel caso `this` risulta undefined.
+    private _oPinch = Gesture.Pinch()
+        .runOnJS(true)
+        .onChange(this.onPinchChangeJs.bind(this))
+        .onEnd(this.onPinchEndJs.bind(this));
 
     public constructor(props: any) {
         super(props);
@@ -73,9 +84,6 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
     };
 
     public render() {
-        const oPinch = Gesture.Pinch()
-            .onEnd(this.onPinchEnd.bind(this))
-            .onChange(this.onPinchChange.bind(this));
         return (
             <CustomSafeArea
                 style={[
@@ -87,7 +95,7 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
                     ]}>
                     <GestureHandlerRootView>
                         <GestureDetector
-                            gesture={oPinch}>
+                            gesture={this._oPinch}>
                             <CustomText style={{ fontSize: this.nFontSizeTmp }}>
                                 {this._oCurrState.chantText}
                             </CustomText>
@@ -102,39 +110,43 @@ export default class ChantText extends myReactComponent<ChantTextProps> {
         );
     };
 
-    public onShare(event: GestureResponderEvent): void {
-        Print.printToFileAsync({
-            html: myRichText.formatHtml(
-                this._sOriginalText,
-                this._params.oJsonLine.title,
-                this._params.oJsonLine.displAuthors,
-                this._params.oJsonLine.displAlbums)
-        })
-            .then((value: Print.FilePrintResult): Print.FilePrintResult => {
-                Sharing.shareAsync(value.uri);
-                return value;
-            },
-                (reason: any) => { console.error("r1", reason) }
-            )
-            .catch(
-                (reason2: any) => {
-                    console.error("r2:", reason2)
-                }
-            );
-    };
+    public async onShare(event: GestureResponderEvent): Promise<void> {
+        try {
+            // base64: true => il PDF mi viene restituito anche come stringa base64,
+            // così non devo leggere il file generato da expo-print (che l'app non può leggere).
+            const oPrinted: Print.FilePrintResult = await Print.printToFileAsync({
+                html: myRichText.formatHtml(
+                    this._sOriginalText,
+                    this._params.oJsonLine.title,
+                    this._params.oJsonLine.displAuthors,
+                    this._params.oJsonLine.displAlbums),
+                base64: true
+            });
+            if (!oPrinted.base64) {
+                throw new Error("printToFileAsync non ha restituito il base64 del PDF");
+            }
 
-    public onPinchEnd(oEvent: GestureStateChangeEvent<PinchGestureHandlerEventPayload>, bSuccess: boolean) {
-        //'worklet';
-        runOnJS(this.onPinchEndJs.bind(this))(oEvent, bSuccess);
+            // Scrivo il PDF in una cartella che l'app può gestire (con nome leggibile) e condivido quel file
+            const sSafeTitle: string = this._params.oJsonLine.title
+                .replace(/[^\p{L}\p{N}\-_ ]/gu, '')
+                .trim() || 'chant';
+            const oDest = new File(Paths.cache, `${this._params.oJsonLine.number}-${sSafeTitle}.pdf`);
+            if (oDest.exists) {
+                oDest.delete();
+            }
+            oDest.write(new Uint8Array(Buffer.from(oPrinted.base64, 'base64')));
+
+            await Sharing.shareAsync(oDest.uri, {
+                mimeType: 'application/pdf',
+                UTI: 'com.adobe.pdf'
+            });
+        } catch (oReason: any) {
+            console.error("onShare:", oReason);
+        }
     };
 
     public onPinchEndJs(oEvent: GestureStateChangeEvent<PinchGestureHandlerEventPayload>, bSuccess: boolean) {
-        this.nFontSize = this.nFontSize * oEvent.scale;
-    };
-
-    public onPinchChange(oEvent: GestureUpdateEvent<PinchGestureHandlerEventPayload & PinchGestureChangeEventPayload>) {
-        //'worklet';
-        runOnJS(this.onPinchChangeJs.bind(this))(oEvent);
+        this.nFontSize = Settings.normalizeTextSize(this.nFontSize * oEvent.scale);
     };
 
     public onPinchChangeJs(oEvent: GestureUpdateEvent<PinchGestureHandlerEventPayload & PinchGestureChangeEventPayload>) {
