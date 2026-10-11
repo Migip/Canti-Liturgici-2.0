@@ -18,25 +18,32 @@ export function AppHeader({ navigation, route, options, back }: NativeStackHeade
 
     const right = options.headerRight?.({ canGoBack: !!back, tintColor: clTheme.TextColorString });
 
-    return (
-        <View
+return (
+    <View
+        style={{
+            paddingTop: insets.top,
+            height: insets.top + 56,
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingHorizontal: 12,
+            backgroundColor: clTheme.NavTheme.colors.card,
+            //borderBottomWidth: 1,
+            //borderBottomColor: clTheme.BorderColor,
+        }}>
+        {left}
+        <Text
+            numberOfLines={1}
             style={{
-                paddingTop: insets.top,
-                height: insets.top + 56,
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingHorizontal: 12,
-                backgroundColor: clTheme.NavTheme.colors.card, // adatta al tuo tema
-                // borderBottomWidth: 1,
-                // borderBottomColor: clTheme.BorderColor,
+                flex: 1,
+                textAlign: 'left',
+                marginLeft: left ? 8 : 0,
+                fontSize: 17,
+                fontWeight: '600',
+                color: clTheme.TextColor,
             }}>
-            <View style={{ flex: 1, alignItems: 'flex-start' }}>{left}</View>
-            <Text
-                numberOfLines={1}
-                style={{ fontSize: 17, fontWeight: '600', color: clTheme.TextColor }}>
-                {title}
-            </Text>
-            <View style={{ flex: 1, alignItems: 'flex-end' }}>{right}</View>
-        </View>
-    );
+            {title}
+        </Text>
+        {right}
+    </View>
+);
 }
